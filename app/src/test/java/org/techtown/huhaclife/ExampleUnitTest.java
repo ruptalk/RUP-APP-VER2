@@ -1,4 +1,4 @@
-package org.techtown.rup_ver2;
+package org.techtown.huhaclife;
 
 import org.junit.Test;
 

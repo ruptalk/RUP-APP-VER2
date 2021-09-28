@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--layout_constraintHorixontal_bias :수평방향(오른쪽/왼쪽 또는 시작 끝)사이드 제약시 양 사이드 간 위치 비율
+    ->뷰의 왼쪽 또는 시작 사이드 제약위치가 0의 기준
+    ->뷰의 오른쪽 또는 끝 사이드 제약 위치가 1의 기준
+    layout_constraintVertical_bias: 수직방향 사이드 제약시 , 양사이드 간 위치 비율.
+    ->뷰의 위 사이드 제약 위치가 0의 기준
+    ->뷰의 아래 사이드 제약 위치가 1의 기준
+
+    Margin: 위벳이 부모 레이아웃의 테두리로 부터 여백을 말함
+    Padding: 위젯 테두리로 부터 테두리 안의 내용 사이의 여백을 말한다.-->
+
+    <EditText
+    android:id="@+id/student_id"
+    android:hint="student_number"
+    android:layout_width="0dp"
+    android:paddingLeft="20dp"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp"
+    android:layout_height="wrap_content"
+        android:background="@drawable/edittext"
+    app:layout_constraintWidth_percent=".8"
+    app:layout_constraintVertical_bias=".3"
+    app:layout_constraintHorizontal_bias=".5"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintBottom_toBottomOf="parent"/>
+    <EditText
+        android:id="@+id/student_pw"
+        android:hint="password"
+        android:layout_width="0dp"
+        android:paddingLeft="20dp"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/edittext"
+        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginTop="20dp"
+        app:layout_constraintHorizontal_bias=".5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/student_id"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <Button
+        android:id="@+id/student_login"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="로그인"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:background="@drawable/button_bg"
+        app:layout_constraintWidth_percent=".8"
+        app:layout_constraintVertical_bias=".3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/student_pw"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    <TextView
+        android:id="@+id/tv_fogpw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="비밀번호를 잊으셨나요?"
+        app:layout_constraintVertical_bias="0"
+        android:layout_marginTop="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/student_login"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
