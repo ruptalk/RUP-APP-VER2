@@ -1,67 +1,145 @@
 package org.techtown.huhaclife;
 
-import androidx.fragment.app.FragmentActivity;
-import androidx.viewpager.widget.ViewPager;
-
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.viewpager.widget.ViewPager;
+
+import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
+import com.kakao.sdk.common.KakaoSdk;
+import com.kakao.sdk.user.UserApiClient;
 
-public class LoginActivity extends FragmentActivity {
 
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    FloatingActionButton fb,google,kakao;
-    private TextView tv_rup;
-    float v=0;
+public class LoginActivity extends AppCompatActivity {
+    public ViewPager viewPager;
+    private BottomSheetBehavior sheetBehavior;
+    private ConstraintLayout layoutBottomSheet;
+    private TextView logo;
+    private TabLayout tabLayout;
+    private LottieAnimationView earth;
+    private ImageView fb,google,kakao;
+    private float v=0; //애니메이션 투명도 지정
     final TablelayoutAdapter adapter=new TablelayoutAdapter(getSupportFragmentManager());
+
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        KakaoSdk.init(this,"6d2aa639e8ea6e75a8dd34f45ad60cf0");
+
+
+
+        layoutBottomSheet=(ConstraintLayout) findViewById(R.id.bottomsheet);
+        sheetBehavior=BottomSheetBehavior.from(layoutBottomSheet);
+        logo=(TextView)findViewById(R.id.text);
         tabLayout=findViewById(R.id.tab_layout1);
         viewPager=findViewById(R.id.view_pager);
-        fb=(FloatingActionButton) findViewById(R.id.fab_feacebook);
-        google=(FloatingActionButton)findViewById(R.id.fab_google);
-        kakao=(FloatingActionButton)findViewById(R.id.fab_kakao);
-        tv_rup=(TextView)findViewById(R.id.tv_rup);
+        earth=(LottieAnimationView)findViewById(R.id.img_earth);
+        kakao=(ImageView)findViewById(R.id.fab_kakao);
+        google=(ImageView)findViewById(R.id.fab_google);
+        fb=(ImageView)findViewById(R.id.fab_feacebook);
 
 
+
+
+        //kakao로그인
+        kakao.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //카카오톡이 설치되어 있는지 유무 파악
+                if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(getApplicationContext())){
+
+                }else{
+
+
+                }
+            }
+        });
+
+
+        //어댑터에 뷰 객체 추가하고 뷰페이지에 어댑터 달기
         setViewPager(viewPager);
+
+        //tablayout에 항목 추가가
         tabLayout.addTab(tabLayout.newTab().setText("로그인"));
         tabLayout.addTab(tabLayout.newTab().setText("회원가입"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
 
+        //뷰페이저에 tablayout달기
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
 
-        fb.setTranslationY(300);//setTranslationY가 무엇이여
-        google.setTranslationY(300);
-        kakao.setTranslationY(300);
+        //애니메이션 효과 셋팅
         tabLayout.setTranslationY(300);
-        tv_rup.setTranslationY(-300);
-
-
-
-        fb.setAlpha(v);
-        google.setAlpha(v);
-        kakao.setAlpha(v);
+        logo.setTranslationY(-700);
         tabLayout.setAlpha(v);
-        tv_rup.setAlpha(v);
+        logo.setAlpha(v);
 
-
-        fb.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
-        google.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
-        kakao.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
+        //애니메이션 실행
+        logo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         tabLayout.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
-        tv_rup.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
 
 
+        //persistent bottom sheet 상태에따라 동작주기
+        sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+                switch (newState){
+                    case BottomSheetBehavior.STATE_HIDDEN:
+                        break;
+                    case BottomSheetBehavior.STATE_EXPANDED:
+                        System.out.println("다 보여줬다.");
+                        break;
+                    case BottomSheetBehavior.STATE_DRAGGING:
+                        System.out.println("드래깅되고 있는 상태.");
+                        ObjectAnimator animation4 = ObjectAnimator.ofFloat(logo, "translationY", -350f);
+                        ObjectAnimator animation5 = ObjectAnimator.ofFloat(earth, "translationY", -400f);
+                        ObjectAnimator animation6 = ObjectAnimator.ofFloat(earth,  View.SCALE_X , 1f);
+                        ObjectAnimator animation7 = ObjectAnimator.ofFloat(earth,  View.SCALE_Y , 1f);
+                        //animation.setDuration(00);
+                        animation4.start();
+                        animation5.start();
+                        animation6.start();
+                        earth.getLayoutParams().height=250;
+                        earth.getLayoutParams().width=250;
+                        earth.requestLayout();
+                        break;
+                    case BottomSheetBehavior.STATE_COLLAPSED:
+                        System.out.println("다 안보여줌.");
+                        ObjectAnimator animation1 = ObjectAnimator.ofFloat(logo, "translationY", 0f);
+                        ObjectAnimator animation2 = ObjectAnimator.ofFloat(earth, "translationY", 0f);
+                        earth.getLayoutParams().height=400;
+                        earth.getLayoutParams().width=400;
+                        earth.requestLayout();
+                        //animation.setDuration(00);
+                        animation1.start();
+                        animation2.start();
+                        break;
+
+                }
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
     }
+
+
     public void setViewPager(ViewPager viewPager){
         adapter.addFragment(new LoginTabFragment(),"로그인");
         adapter.addFragment(new RegisterTabFragment(),"회원가입");
@@ -69,10 +147,3 @@ public class LoginActivity extends FragmentActivity {
     }
 
 }
-
-/*
-* alpha : 알파의 값(0[투명]~100[불투명])의 해당하는 헥사값을 알아보자
-* 20%: 255*0.2=51 16진수 헥사 값 33 :투명도가 80%에 해당한다고 한다.
-*
-* duration: 효과시간 1/1000sec단위
-* setstartDelay:  시작하고 몇초 후에 실행*/

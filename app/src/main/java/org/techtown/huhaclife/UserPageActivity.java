@@ -1,7 +1,8 @@
 package org.techtown.huhaclife;
 
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class UserPageActivity extends AppCompatActivity {
     private RecyclerView rv_missionlist;
     private MissionRecyclerAdapter adapter;
+    private ImageView userprofile;
 
 
     @Override
@@ -18,8 +20,18 @@ public class UserPageActivity extends AppCompatActivity {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_userpage);
         rv_missionlist=(RecyclerView)findViewById(R.id.rv_missionlist);
+        userprofile=(ImageView)findViewById(R.id.iv_userprofile);
 
-        rv_missionlist=(RecyclerView)findViewById(R.id.rv_missionlist);
+
+        userprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                
+
+            }
+        });
+
+
         adapter=new MissionRecyclerAdapter();
         rv_missionlist.setAdapter(adapter);
         LinearLayoutManager layoutManager=new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);

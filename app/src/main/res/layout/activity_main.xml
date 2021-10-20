@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="@drawable/note_background">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_1"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".3"
+        app:layout_constraintHeight_percent=".2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0"
-        android:background="@color/green1">
+        android:background="@color/lightgreen">
 
 
     <ImageView
@@ -24,36 +25,26 @@
         android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="10dp"
-        android:src="@drawable/user"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="fitCenter"
         android:background="@drawable/userprofile_shape"
-        app:layout_constraintHeight_percent=".4"
+        app:layout_constraintHeight_percent=".65"
         app:layout_constraintWidth_percent=".2"/>
         <TextView
-            android:id="@+id/tv_hello"
+            android:id="@+id/tv_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="SOYOUNG님"
-            android:textSize="25sp"
-            android:textStyle="bold"
+            android:fontFamily="@font/dhsrmfdlvdmlduscp"
+            android:textSize="40sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toEndOf="@id/ib_userprofile"
             app:layout_constraintEnd_toStartOf="@id/ib_info"
-            app:layout_constraintHorizontal_bias=".07"
+            app:layout_constraintHorizontal_bias=".1"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="10dp"/>
-        <TextView
-            android:id="@+id/tv_mypoint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="보유 포인트 140P"
-            android:textSize="25sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/ib_userprofile"
-            app:layout_constraintEnd_toStartOf="@id/ib_info"
-            app:layout_constraintHorizontal_bias=".2"
-            app:layout_constraintTop_toBottomOf="@id/tv_hello"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginTop="35dp"/>
+
 
     <ImageButton
         android:id="@+id/ib_info"
@@ -61,23 +52,27 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintWidth_percent=".07"
-        app:layout_constraintHeight_percent=".2"
+        app:layout_constraintHeight_percent=".3"
         app:layout_constraintStart_toEndOf="@id/ib_userprofile"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias=".9"
-        android:layout_marginTop="10dp"/>
+        android:layout_marginTop="35dp"
+        android:layout_marginRight="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintHeight_percent=".8"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cl_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias=".8">
+        app:layout_constraintVertical_bias=".8"
+        android:background="@color/lightgreen">
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/vp_page"
             android:layout_width="0dp"
@@ -90,8 +85,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginTop="10dp"
             app:layout_constraintBottom_toBottomOf="parent"/>
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tl_item"
+            app:tabTextColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintHeight_percent=".1"
@@ -104,15 +101,6 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="1"
-        android:text="광고주님들 기다리겠습니다 츄릅츄릅츄베릅"
-        android:textSize="20sp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,76 +3,76 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".9"
-        app:layout_constraintWidth_percent=".9"
-        android:background="@drawable/main_viewpage_shape"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
-    <TextView
-        android:id="@+id/tv_1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="오늘 Take-out컵"
-        android:textColor="@color/black"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias=".1"/>
 
-    <TextView
-        android:id="@+id/tv_2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="재활용된 개수"
-        android:textColor="@color/black"
-        android:textSize="35sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_1"
-        app:layout_constraintVertical_bias="0"
-        android:layout_marginTop="10dp"/>
-    <TextView
-        android:id="@+id/tv_totalcupnum"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0000"
-        android:textColor="@color/black"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_2"
-        app:layout_constraintVertical_bias="0"
-        android:layout_marginTop="30dp"/>
+        <TextView
+            android:id="@+id/tv_text2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="나의 보유 포인트"
+            android:fontFamily="@font/dhsrmfdlvdmlduscp"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias=".1"
+            />
+        <TextView
+            android:id="@+id/tv_text3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="P"
+            android:fontFamily="@font/dhsrmfdlvdmlduscp"
+            android:textColor="@color/black"
+            android:textSize="80sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_text2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".35"
+            />
 
-    <TextView
-        android:id="@+id/tv_3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:text="개"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_totalcupnum"
-        app:layout_constraintTop_toBottomOf="@+id/tv_2"
-        app:layout_constraintHorizontal_bias="0"
-        app:layout_constraintVertical_bias="0"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="30dp"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_userpoint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1,150"
+            android:fontFamily="@font/dhsrmfdlvdmlduscp"
+            android:textColor="@color/black"
+            android:textSize="80sp"
+            app:layout_constraintStart_toEndOf="@id/tv_text3"
+            app:layout_constraintTop_toBottomOf="@id/tv_text2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".1"
+            />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="200dp"
+            android:layout_height="300dp"
+            app:lottie_fileName="water_cup.json"
+            app:lottie_autoPlay="true"
+            app:layout_constraintHorizontal_bias=".5"
+            android:foregroundGravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_text3"/>
+        <Button
+            android:id="@+id/btn_plantGo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이쁜이 물주러 가기 ->"
+            android:textColor="@color/black"
+            android:textSize="30sp"
+            android:background="@color/green1"
+            android:fontFamily="@font/dhsrmfdlvdmlduscp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_userpoint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias=".5"
+            app:layout_constraintVertical_bias=".3"
+            android:visibility="invisible"
+            />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
