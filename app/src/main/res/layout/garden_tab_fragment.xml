@@ -1,6 +1,95 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#A4BD86">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageButton
+            android:id="@+id/imgBtn_plantCactus"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:background="@drawable/plant_cactus"/>
+
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/imgBtn_plantCactus"
+            android:gravity="center"
+            android:text="선인장"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/uhbee_mysen_bold"/>
+
+        <ImageButton
+            android:id="@+id/imgBtn_plantAzalea"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_toRightOf="@id/imgBtn_plantCactus"
+            android:background="@drawable/palnt_azalea"/>
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_below="@id/imgBtn_plantAzalea"
+            android:layout_toRightOf="@id/tv1"
+            android:gravity="center"
+            android:text="진달래"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/uhbee_mysen_bold"/>
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_above="@id/tv3"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:text="현재 물 주고 있는 꽃은 해바라기입니다."
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:fontFamily="@font/uhbee_mysen_bold"/>
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/plantProgressbar"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginBottom="10dp"
+            android:fontFamily="@font/uhbee_mysen_bold"
+            android:text="올바른 재활용 시 경험치가 자라요!"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/plantProgressbar"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="200dp"
+            android:layout_height="30dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="20dp"
+            android:max="100"
+            android:progress="60"
+            android:text="1/10"
+            android:textAlignment="gravity" />
+
+        <ImageView
+            android:id="@+id/nowPlant"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/plant_sunflower"/>
+
+</RelativeLayout>
