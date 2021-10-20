@@ -1,118 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LoginActivity"
+    android:background="@color/sky"
     >
-    <!--완전히 수평적인 계층구조를 가질 수 있다.
-    중첩된 부와 뷰그럽 구조없이 복잡한 레이아웃을 만들 수 있게 해줌
-    하향식 Layout계층구조에서 전통적인 레이아웃들보다 더 나은 성늘을 보인다.
-    참고사이트 : https://abandonia.tistory.com/1-->
-    <!--layout_constrainStart_toStartOf : 뷰의시작 사이드를 대상 뷰의 시작사이드에 맞춤
-    lyaout_constraintTop_toTopOf:뷰의 위쪽 사이드를 대상 뷰의 위쪽 사이드에 맞춤
-    layout_constraintVerical_bias: 수직방향(Top/Bottom)사이드 제약시 양사이드 간 위치 비율
-    layout_constraintTop_toBottomOf: 뷰의 왼쪽 사이드를 대상 뷰의 아래쪽 사이드에 맞춤
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp"/>
 
-    부모의 크기에 비례해 위젯의 크기가 조정되는 Height,Width속성
-    테블릿등과 같이 화면크기가 큰 기기에서 기기 크기에 비해 위젯의 크기가 너무 작은 경우를 방지하기 위해서
-    크기가 화면 크기에 맞게 변화하도록 도와주는 속성이 바로 percent속성이다.
-    layout_constrainHeight_percent: 높이 길이를 부모에 비례하여 결정함-->
 
-    <TextView
-        android:id="@+id/tv_rup"
+    <com.airbnb.lottie.LottieAnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="RUP"
-        android:textColor="@color/white"
-        android:textSize="50sp"
-        android:textStyle="bold"
-        app:layout_constraintVertical_bias=".1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:lottie_fileName="sky.json"
+        app:lottie_autoPlay="true"
+        app:lottie_loop="true"/>
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@drawable/test"
-        app:layout_constraintHeight_percent=".7"
-        app:layout_constraintVertical_bias="1"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-        <androidx.viewpager.widget.ViewPager
-            android:background="@color/black"
-            android:id="@+id/view_pager"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintHeight_percent="0.7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tab_layout1"/>
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/dhsrmfdlvdmlduscp"
+                android:text="RUP"
+                android:textColor="@color/black"
+                android:textSize="70sp"
+                android:textStyle="bold"
+                android:layout_marginTop="150dp"/>
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tab_layout1"
-            android:layout_width="match_parent"
-            app:tabTextColor="@color/white"
-            android:layout_height="wrap_content"
-            app:layout_constraintVertical_bias="0"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/img_earth"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_fileName="earth2.json"/>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_google"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/google_logo"
-            android:scaleType="centerInside"
-            android:elevation="35dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/view_pager"/>
+        </LinearLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_feacebook"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:src="@drawable/facebook_logo"
-            android:elevation="35dp"
-            app:layout_constraintHorizontal_bias="1"
-            android:layout_marginRight="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/fab_google"
-            app:layout_constraintTop_toBottomOf="@id/view_pager"/>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_kakao"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            app:layout_goneMarginLeft="20dp"
-            android:src="@drawable/kakao_logo"
-
-            app:layout_constraintHorizontal_bias="0"
-            android:layout_marginLeft="20dp"
-            app:layout_constraintTop_toBottomOf="@id/view_pager"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/fab_google"
-            app:layout_constraintEnd_toEndOf="parent"/>
+    <include layout="@layout/login_persistent_bottom_sheet"/>
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
