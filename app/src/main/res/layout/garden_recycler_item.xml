@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageButton
+        android:id="@+id/plantImageButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:backgroundTint="#00FFFFFF"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/plantName"
+        android:layout_width="100dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/plantImageButton"
+        android:gravity="center"
+        android:text="식물 이름"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:fontFamily="@font/font_dhsrmfdlv"/>
+</RelativeLayout>

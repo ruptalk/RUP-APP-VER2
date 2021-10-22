@@ -4,6 +4,7 @@ public class UserInfo {
     private String email;
     private String pw;
     private String name;
+    private String plant;
     private int point;
 
     public int getPoint() {
@@ -38,7 +39,9 @@ public class UserInfo {
         this.name = name;
     }
 
+    public String getPlant() { return plant; }
 
+    public void setPlant(String plant) { this.plant=plant; }
 
 
 }

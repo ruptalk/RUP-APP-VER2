@@ -28,7 +28,7 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_toRightOf="@id/imgBtn_plantCactus"
-            android:background="@drawable/palnt_azalea"/>
+            android:background="@drawable/plant_azalea"/>
 
         <TextView
             android:layout_width="100dp"

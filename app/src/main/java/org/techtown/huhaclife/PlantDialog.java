@@ -1,30 +1,18 @@
 package org.techtown.huhaclife;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.media.Image;
-import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import org.w3c.dom.Text;
-
 public class PlantDialog {
     private Context context;
 
-    public PlantDialog(Context context){
-        this.context=context;
+    public PlantDialog(){
+
     }
 
     public void callFunction(String plantName){
@@ -46,10 +34,16 @@ public class PlantDialog {
             planguage.setText("꽃말: 타오르는 열정");
         }
         else if(plantName.equals("진달래")){
-            pimage.setImageResource(R.drawable.palnt_azalea);
+            pimage.setImageResource(R.drawable.plant_azalea);
             pname.setText("이름: 진달래");
             pdate.setText("키운 날짜: 21/10/05");
             planguage.setText("꽃말: 사랑의 기쁨");
+        }
+        else{
+            pimage.setImageResource(R.drawable.p_logo);
+            pname.setText("이름: ");
+            pdate.setText("키운 날짜: ");
+            planguage.setText("꽃말: ");
         }
 
 

@@ -13,15 +13,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 public class GardenTabFragment extends Fragment {
-<<<<<<< HEAD
+
 
     ImageButton imgBtn_plantCactus, imgBtn_plantAzalea;
     Dialog dialog_plant;
-=======
+
     public static GardenTabFragment newInstance(){
         return new GardenTabFragment();
     }
->>>>>>> upstream/main
+
+
 
     @Nullable
     @Override
@@ -34,7 +35,7 @@ public class GardenTabFragment extends Fragment {
         dialog_plant=new Dialog(getActivity().getApplicationContext());
         dialog_plant.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog_plant.setContentView(R.layout.plant_dialog);
-
+/*
         imgBtn_plantCactus.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -52,6 +53,8 @@ public class GardenTabFragment extends Fragment {
             }
         });
 
+
+ */
 
         return view;
     }
