@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="plant_list">
+        <item>@drawable/plant_cactus</item>
+        <item>@drawable/plant_azalea</item>
+        <item>@drawable/plant_sunflower</item>
+        <item>@drawable/login_planet_earth</item>
+    </array>
+    <string-array name="plant_name">
+        <item>"선인장"</item>
+        <item>"진달래"</item>
+        <item>"해바라기"</item>
+        <item>"?"</item>
+
+    </string-array>
+</resources>

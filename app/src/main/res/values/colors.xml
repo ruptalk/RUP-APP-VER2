@@ -11,11 +11,13 @@
     <color name="lightgreen2">#E1C4FB84</color>
     <color name="green">#344E17</color>
     <color name="green1">#886E917A</color>
+    <color name="green2">#6E917A</color>
     <color name="yellow">#7AFFE900</color>
     <color name="lightyellow">#B7FFC107</color>
     <color name="purple_202">#68BB86FC</color>
     <color name="sky">#E22EEEFF</color>
     <color name="gray">#8F515151</color>
+    <color name="floor">#F3D6AB</color>
 
 
 

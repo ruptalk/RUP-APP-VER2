@@ -1,6 +1,7 @@
 package org.techtown.huhaclife;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -18,7 +19,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,6 +102,23 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
                     UserInfo userInfo=snapshot.getValue(UserInfo.class);
                     checklist=userInfo.getPlant();
                     Log.d(TAG,checklist);
+                    //[코드리뷰]to.꼬세지! from mini_0u0
+                    //이렇게 짜보는것도 괜찮을지도?[110-118 line확인]
+                    //values디렉터리->array파일 확인
+                    //Drawable ArrayList 참고함.
+
+                    TypedArray typedArray=getResources().obtainTypedArray(R.array.plant_list);
+                    String[] names=getResources().getStringArray(R.array.plant_name);
+                    int size= checklist.length();
+
+                    for(int i=0;i<size;i++){
+                        if(checklist.charAt(i)=='1'){
+                            addPlantItem(typedArray.getDrawable(i),names[i]);
+                        }
+                        else{
+                            addPlantItem(typedArray.getDrawable('3'),names[3]);
+                        }
+                    }
                     /*
                     if (checklist.charAt(0) == '1') {
                         Log.d(TAG,"들어옴0");
