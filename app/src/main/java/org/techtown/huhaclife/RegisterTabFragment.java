@@ -88,6 +88,7 @@ public class RegisterTabFragment extends Fragment {
                                 userInfo.setName(name);
                                 userInfo.setPw(pw);
                                 userInfo.setPoint(0);
+                                userInfo.setPlant("000000000000000");
                                 reference.child("User").child(uid).setValue(userInfo);
                                 ViewPager viewPager=((LoginActivity)getActivity()).viewPager;
                                 viewPager.setCurrentItem(0);
