@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         vp_page=(ViewPager)findViewById(R.id.vp_page);
         tl_item=(TabLayout)findViewById(R.id.tl_item);
         tv_id=(TextView)findViewById(R.id.tv_id);
+
 
         settingitem(vp_page);
         tl_item.addTab(tl_item.newTab().setText("홈"));
