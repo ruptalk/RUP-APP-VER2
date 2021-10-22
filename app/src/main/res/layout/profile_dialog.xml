@@ -1,47 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/dialog">
+    android:layout_width="300dp"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/dialog_profil">
 
     <TextView
         android:id="@+id/tv1"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".1"
+        android:layout_height="80dp"
         android:text="프로필 설정하기"
+        android:textColor="@color/green"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:gravity="center"
         android:fontFamily="@font/dhsrmfdlvdmlduscp"
         android:textStyle="bold"
-        android:background="@color/lightgreen"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        android:background="@color/lightgreen"/>
     <TextView
         android:id="@+id/tv_camera"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".1"
+        android:layout_height="80dp"
         android:text="사진 찍기"
+        android:textSize="25sp"
+        android:gravity="center"
         android:textAlignment="center"
-        android:paddingTop="20dp"
         android:fontFamily="@font/dhsrmfdlvdmlduscp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv1"/>
+        android:textStyle="bold"/>
     <TextView
         android:id="@+id/tv_album"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".1"
+        android:layout_height="80dp"
         android:text="앨범에서 가져오기"
+        android:textSize="25sp"
         android:textAlignment="center"
-        android:paddingTop="30dp"
+        android:gravity="center"
         android:fontFamily="@font/dhsrmfdlvdmlduscp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_camera"/>
+        android:textStyle="bold"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
