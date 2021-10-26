@@ -79,6 +79,11 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
 
                     }
 
+                    @Override
+                    public void AlbumClick() {
+
+                    }
+
                 });
                 dialog.show();
             }
