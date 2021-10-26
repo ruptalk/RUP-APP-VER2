@@ -46,7 +46,7 @@ public class LoginTabFragment extends Fragment {
 
         //사용자 권한이 있을 경우
         if(user!=null){
-           startActivity(new Intent(getActivity(),MainActivity.class));
+           startActivity(new Intent(getActivity(), MainActivity.class));
         }
 
 

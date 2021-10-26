@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,14 +49,15 @@ public class MainTabFragment extends Fragment {
         });
 
 
-        btn_plantGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //프래그먼트에서 액티비티 변수 접근: https://jhshjs.tistory.com/16
-                ViewPager vp=((MainActivity)getActivity()).vp_page;
-                vp.setCurrentItem(2);
-            }
-        });
+//        //memo
+//        btn_plantGo.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                //프래그먼트에서 액티비티 변수 접근: https://jhshjs.tistory.com/16
+//                //ViewPager vp=((MainActivity)getActivity()).vp_page;
+//                vp.setCurrentItem(2);
+//            }
+//        });
 
         return root;
     }

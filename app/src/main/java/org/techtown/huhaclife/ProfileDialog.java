@@ -16,6 +16,7 @@ public class ProfileDialog extends Dialog {
 
     public interface ProfileDialogListener{
         void CameraClick();
+        void AlbumClick();
     }
 
     private ProfileDialogListener profileDialogListener;
@@ -47,8 +48,14 @@ public class ProfileDialog extends Dialog {
                 //인터페이스의 함수를 호출하여 변수에 저장된 값들을 ACtivity로 전달
                 profileDialogListener.CameraClick();
                 dismiss();
-                
+            }
+        });
 
+        album.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                profileDialogListener.AlbumClick();
+                dismiss();
             }
         });
     }
