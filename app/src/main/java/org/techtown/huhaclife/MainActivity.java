@@ -1,21 +1,30 @@
 package org.techtown.huhaclife;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -23,53 +32,53 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ImageView ib_userprofile;
-    private ImageButton ib_info;
-    private TextView tv_id;
-    public ViewPager vp_page;
-    private TabLayout tl_item;
-    private FrameLayout container;
-    private Fragment mainTabFragment, qrTabFragment,gardenTabFragment;
-    private TablelayoutAdapter tablelayoutAdapter=new TablelayoutAdapter(getSupportFragmentManager());
-    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-    private FirebaseDatabase firebaseDatabase;
+    private ProgressBar progressBar;
+    private ImageView QR_code,userprofile;
+    private TextView username,userpoint;
+    private File file;
+    private FirebaseUser firebaseUsser= FirebaseAuth.getInstance().getCurrentUser();
+    private FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
     public DatabaseReference databaseReference;
     public String uid;
-
-
+    private UserInfo userInfo;
+    private ActivityResultLauncher<Intent> resultLauncher,resultLauncher2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        QR_code = (ImageView) findViewById(R.id.qr);
+        userprofile = (ImageView) findViewById(R.id.iv_userprofile);
+        username = (TextView) findViewById(R.id.tv_username);
+        userpoint = (TextView) findViewById(R.id.tv_userpoint);
+        databaseReference = firebaseDatabase.getReference();
 
-        ib_userprofile=(ImageView) findViewById(R.id.ib_userprofile);
-        ib_info=(ImageButton)findViewById(R.id.ib_info);
-        vp_page=(ViewPager)findViewById(R.id.vp_page);
-        tl_item=(TabLayout)findViewById(R.id.tl_item);
-        tv_id=(TextView)findViewById(R.id.tv_id);
+        uid = firebaseUsser.getUid().trim();
 
+        //사용자 프로필 둥글게 처리
+        userprofile.setBackground(new ShapeDrawable(new OvalShape()));
+        userprofile.setClipToOutline(true);
 
-        settingitem(vp_page);
-        tl_item.addTab(tl_item.newTab().setText("홈"));
-        tl_item.addTab(tl_item.newTab().setText("QR"));
-        tl_item.addTab(tl_item.newTab().setText("정원"));
-        tl_item.setTabGravity(TabLayout.GRAVITY_FILL);
-        tl_item.setupWithViewPager(vp_page);
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-        uid=firebaseUser.getUid();
-
+        //사용자 프로필
         databaseReference.child("User").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserInfo userInfo=snapshot.getValue(UserInfo.class);
-                tv_id.setText(userInfo.getName());
+                userInfo = snapshot.getValue(UserInfo.class);
+                username.setText(userInfo.getName());
+                userpoint.setText(String.valueOf(userInfo.getPoint()));
+
+                qrcreate(userInfo.getEmail());
             }
 
             @Override
@@ -78,41 +87,161 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ib_userprofile.setOnClickListener(new View.OnClickListener() {
+
+
+        userprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(getApplicationContext(),UserPageActivity.class);
+                Intent intent=new Intent(MainActivity.this,UserPageActivity.class);
                 startActivity(intent);
+                //위험권한팝업창 설정
+//                ProfileDialog dialog = new ProfileDialog(MainActivity2.this, new ProfileDialog.ProfileDialogListener() {
+//                    @Override
+//                    public void CameraClick() {
+//                        int cameraPermission = ActivityCompat.checkSelfPermission(MainActivity2.this, Manifest.permission.CAMERA);
+//                        if (cameraPermission == PackageManager.PERMISSION_GRANTED) {
+//                            play_camera();
+//                        } else {
+//                            requestPermission();
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void AlbumClick() {
+//                        int albumPermission = ActivityCompat.checkSelfPermission(MainActivity2.this, Manifest.permission.READ_EXTERNAL_STORAGE);
+//                        if (albumPermission == PackageManager.PERMISSION_GRANTED) {
+//                            play_album();
+//                        } else {
+//                            String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
+//                            ActivityCompat.requestPermissions(MainActivity2.this, permissions, 102);
+//                        }
+//
+//                    }
+//                });
+//                dialog.setContentView(R.layout.profile_dialog);
+//                dialog.show();
             }
         });
+        //카메라 접근을 하기 위한 콜백함수 처리
+        resultLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent intent = result.getData();
+                            Bitmap bit = (Bitmap) intent.getExtras().get("data");
+                            if (bit != null) {
+                                userprofile.setImageBitmap(bit);
+                            }
+                        }
+                    }
+                });
+        //앨범 접근을 하기 위한 콜백함수 처리
+        resultLauncher2=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            Intent intent = result.getData();
+                            System.out.println(intent);
+                            InputStream in = null;
+                            try {
+                                in = getContentResolver().openInputStream(intent.getData());
+                                Bitmap img = BitmapFactory.decodeStream(in);
+                                userprofile.setImageBitmap(img);
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
 
 
 
-
-        vp_page.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl_item));
-
-
-
-
-        ib_userprofile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent= new Intent(getApplicationContext(),UserPageActivity.class);
-                    startActivity(intent);
-                }
-        });
-
-
-
-
+                        }
+                    }
+                });
     }
 
-     protected void settingitem(ViewPager v){
-            tablelayoutAdapter.addFragment(new MainTabFragment(),"홈");
-            tablelayoutAdapter.addFragment(new QrTabFragment(),"QR");
-            tablelayoutAdapter.addFragment(new GardenTabFragment(),"정원");
-            v.setAdapter(tablelayoutAdapter);
+
+    private void requestPermission(){
+        String []permissions={Manifest.permission.CAMERA};
+        ActivityCompat.requestPermissions(MainActivity.this,permissions,101);
+    }
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //카메라
+        if(requestCode==101){
+           if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+               play_camera();
+           }
+           else{
+               System.out.println(grantResults[0]);
+
+           }
         }
+        //앨범
+        else if(requestCode==102){
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                play_album();
+            }
+            else{
+                System.out.println(grantResults[0]);
+
+            }
+        }
+    }
+    //카메라 실행
+    private  void play_camera(){
+        if(file==null){
+            file=createFile();
+        }
+        Uri fileuri= FileProvider.getUriForFile(MainActivity.this,"org.techtown.huhaclife.fileprovider",file);
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        System.out.println(intent.getData());
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
+        if(intent.resolveActivity(getPackageManager())!=null){
+            resultLauncher.launch(intent);
+        }
+    }
+
+    //앨범 실행
+    private void play_album(){
+        Intent intent=new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.putExtra("request",202);
+        resultLauncher2.launch(intent);
+    }
 
 
+    //파일생성함수
+    private File createFile(){
+        String filename="userprofile.jpg";
+        File startDir= Environment.getExternalStorageDirectory();
+        File outFile =new File(startDir,filename);
+        return  outFile;
+    }
+
+
+
+    //qr코드 생성
+    private void qrcreate(String useremail){
+        MultiFormatWriter multiFormatWriter=new MultiFormatWriter();
+        try {
+            int qrColor=0xFF6E917A;
+            int qrbackroundColor=0xFFF3D6AB;
+
+            BitMatrix bitMatrix=multiFormatWriter.encode(useremail, BarcodeFormat.QR_CODE,200,200);
+            Bitmap bitmap=Bitmap.createBitmap(bitMatrix.getWidth(),bitMatrix.getHeight(),Bitmap.Config.ARGB_8888);
+            for(int x=0; x<200;x++){
+                for(int y=0;y<200;y++){
+                    bitmap.setPixel(x,y,bitMatrix.get(x,y)? qrColor:qrbackroundColor);
+                }
+            }
+            QR_code.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
+    }
 }
