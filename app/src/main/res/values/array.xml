@@ -5,12 +5,52 @@
         <item>@drawable/plant_azalea</item>
         <item>@drawable/plant_sunflower</item>
         <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
+        <item>@drawable/login_planet_earth</item>
     </array>
+
     <string-array name="plant_name">
         <item>"선인장"</item>
         <item>"진달래"</item>
         <item>"해바라기"</item>
-        <item>"?"</item>
+        <item>"백일홍"</item>
+        <item>"수련"</item>
+        <item>"수국</item>
+        <item>"당귀꽃</item>
+        <item>도라지꽃</item>
+        <item>금낭화</item>
+        <item>참나리</item>
+        <item>코스모스</item>
+        <item>국화</item>
+        <item>무궁화</item>
+        <item>철쭉</item>
+        <item>호랑이꽃</item>
+    </string-array>
 
+    <string-array name="plant_language">
+        <item>타오르는 열정</item>
+        <item>사랑의 기쁨</item>
+        <item>당신만을 사랑합니다</item>
+        <item>순결, 청순한 마음</item>
+        <item>담백, 결백, 신비, 꿈, 청정</item>
+        <item>소녀의 꿈</item>
+        <item>모정, 재회, 기약, 초청, 굳은 의지</item>
+        <item>영원한 사랑</item>
+        <item>당신을 따르겠습니다</item>
+        <item>깨끗한 마음, 순결</item>
+        <item>야생의 아름다움, 어린 연정</item>
+        <item>평화와 지혜</item>
+        <item>영원, 일편단심, 섬세한 아름다움, 인내와 끈기</item>
+        <item>자제, 사랑의 즐거움</item>
+        <item>나를 사랑해주세요</item>
     </string-array>
 </resources>

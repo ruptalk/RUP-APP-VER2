@@ -11,53 +11,93 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"/>
 
-    <TextView
-        android:id="@+id/tv_plantName"
+    <RelativeLayout
+        android:id="@+id/layout"
         android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/img_plant"
+        android:layout_height="150dp"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="이름: "
-        android:textSize="30dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/uhbee_mysen_bold"/>
+        android:layout_below="@id/img_plant">
 
-    <TextView
-        android:id="@+id/tv_plantDate"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tv_plantName"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="키운 날짜: "
-        android:textSize="30dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/uhbee_mysen_bold"/>
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="10dp"
+            android:text="이름: "
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
 
-    <TextView
-        android:id="@+id/tv_plantLanguage"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/tv_plantDate"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
-        android:text="꽃말: "
-        android:textSize="30dp"
-        android:textColor="@color/black"
-        android:fontFamily="@font/uhbee_mysen_bold"/>
+        <TextView
+            android:id="@+id/tv_plantName"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_toRightOf="@id/tv1"
+            android:layout_marginTop="10dp"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/tv2"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/tv1"
+            android:layout_marginTop="10dp"
+            android:text="키운 날짜: "
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/tv_plantDate"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/tv1"
+            android:layout_toRightOf="@id/tv2"
+            android:layout_marginTop="10dp"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/tv3"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_below="@id/tv2"
+            android:layout_marginTop="10dp"
+            android:text="꽃말: "
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/tv_plantLanguage"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv2"
+            android:layout_toRightOf="@id/tv3"
+            android:layout_marginTop="10dp"
+            android:autoSizeTextType="uniform"
+            android:textSize="30dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+    </RelativeLayout>
+
 
     <Button
         android:id="@+id/btn_close"
+        android:background="@drawable/plant_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_plantLanguage"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
         android:text="닫기"
         android:textSize="20dp"
         android:textColor="@color/black"
-        android:fontFamily="@font/uhbee_mysen_bold"/>
+        android:fontFamily="@font/font_dhsrmfdlv"/>
 
 
 </RelativeLayout>

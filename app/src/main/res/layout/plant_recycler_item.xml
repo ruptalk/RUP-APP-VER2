@@ -3,8 +3,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <ImageButton
-        android:id="@+id/plantImageButton"
+    <ImageView
+        android:id="@+id/plantImage"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:backgroundTint="#00FFFFFF"
@@ -14,7 +14,7 @@
         android:id="@+id/plantName"
         android:layout_width="100dp"
         android:layout_height="30dp"
-        android:layout_below="@id/plantImageButton"
+        android:layout_below="@id/plantImage"
         android:gravity="center"
         android:text="식물 이름"
         android:textSize="20dp"

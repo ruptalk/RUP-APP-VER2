@@ -2,6 +2,9 @@ package org.techtown.huhaclife;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -9,13 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class PlantDialog {
-    private Context context;
+    private static Context context;
 
-    public PlantDialog(){
-
+    public PlantDialog(Context context){
+        this.context=context;
     }
 
-    public void callFunction(String plantName){
+    public void callFunction(String name, int len){
         final Dialog dialog=new Dialog(context);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -27,23 +30,17 @@ public class PlantDialog {
         TextView pdate=(TextView)dialog.findViewById(R.id.tv_plantDate);
         TextView planguage=(TextView)dialog.findViewById(R.id.tv_plantLanguage);
 
-        if(plantName.equals("선인장")){
-            pimage.setImageResource(R.drawable.plant_cactus);
-            pname.setText("이름: 선인장");
-            pdate.setText("키운 날짜: 21/10/03");
-            planguage.setText("꽃말: 타오르는 열정");
-        }
-        else if(plantName.equals("진달래")){
-            pimage.setImageResource(R.drawable.plant_azalea);
-            pname.setText("이름: 진달래");
-            pdate.setText("키운 날짜: 21/10/05");
-            planguage.setText("꽃말: 사랑의 기쁨");
-        }
-        else{
-            pimage.setImageResource(R.drawable.p_logo);
-            pname.setText("이름: ");
-            pdate.setText("키운 날짜: ");
-            planguage.setText("꽃말: ");
+        TypedArray typedArray=context.getResources().obtainTypedArray(R.array.plant_list);
+        String[] names=context.getResources().getStringArray(R.array.plant_name);
+        String[] languages=context.getResources().getStringArray(R.array.plant_language);
+
+        for(int i=0; i<len; i++){
+            if(name.equals(names[i])){
+                pimage.setImageDrawable(typedArray.getDrawable(i));
+                pname.setText(names[i]);
+                planguage.setText(languages[i]);
+                break;
+            }
         }
 
 
@@ -55,43 +52,6 @@ public class PlantDialog {
             }
         });
     }
+
+
 }
-
-/*
-public class PlantFragmentDialog extends DialogFragment {
-    private Fragment fragment;
-    private static final String TAG="PlantfragmentDialog";
-    private static final String MAIN_MSG="dialog_plant";
-    private String plantMsg;
-
-    public static PlantFragmentDialog newInstance(String mainMsg){
-        Bundle bundle=new Bundle();
-        bundle.putString(MAIN_MSG, mainMsg);
-
-        PlantFragmentDialog fragment=new PlantFragmentDialog();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(getArguments()!=null){
-            plantMsg=getArguments().getString(MAIN_MSG);
-        }
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        View view=getActivity().getLayoutInflater().inflate(R.layout.plant_dialog,null);
-
-        builder.setView(view);
-        Dialog dialog=builder.create();
-        return dialog;
-    }
-}
-
-
- */

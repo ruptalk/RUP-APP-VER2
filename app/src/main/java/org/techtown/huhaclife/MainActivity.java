@@ -1,44 +1,35 @@
 package org.techtown.huhaclife;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.FileProvider;
 
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+
+import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ImageView ib_userprofile;
-    private ImageButton ib_info;
-    private TextView tv_id;
-    public ViewPager vp_page;
-    private TabLayout tl_item;
-    private FrameLayout container;
-    private Fragment mainTabFragment, qrTabFragment,gardenTabFragment;
-    private TablelayoutAdapter tablelayoutAdapter=new TablelayoutAdapter(getSupportFragmentManager());
-    private FirebaseUser firebaseUser=FirebaseAuth.getInstance().getCurrentUser();
-    private FirebaseDatabase firebaseDatabase;
-    public DatabaseReference databaseReference;
-    public String uid;
-
+    private ProgressBar progressBar;
+    private ImageView QR_code,userprofile;
+    private File file;
 
 
     @Override
@@ -46,73 +37,98 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        QR_code=(ImageView)findViewById(R.id.qr);
+        userprofile=(ImageView)findViewById(R.id.iv_userprofile);
 
-        ib_userprofile=(ImageView) findViewById(R.id.ib_userprofile);
-        ib_info=(ImageButton)findViewById(R.id.ib_info);
-        vp_page=(ViewPager)findViewById(R.id.vp_page);
-        tl_item=(TabLayout)findViewById(R.id.tl_item);
-        tv_id=(TextView)findViewById(R.id.tv_id);
-
-
-        settingitem(vp_page);
-        tl_item.addTab(tl_item.newTab().setText("홈"));
-        tl_item.addTab(tl_item.newTab().setText("QR"));
-        tl_item.addTab(tl_item.newTab().setText("정원"));
-        tl_item.setTabGravity(TabLayout.GRAVITY_FILL);
-        tl_item.setupWithViewPager(vp_page);
-        firebaseDatabase=FirebaseDatabase.getInstance();
-        databaseReference=firebaseDatabase.getReference();
-
-        uid=firebaseUser.getUid();
-
-        databaseReference.child("User").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                UserInfo userInfo=snapshot.getValue(UserInfo.class);
-                tv_id.setText(userInfo.getName());
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-        ib_userprofile.setOnClickListener(new View.OnClickListener() {
+        //위험권한팝업창 설정
+        userprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent= new Intent(getApplicationContext(),UserPageActivity.class);
-                startActivity(intent);
+                ProfileDialog dialog=new ProfileDialog(MainActivity.this, new ProfileDialog.ProfileDialogListener() {
+                    @Override
+                    public void CameraClick() {
+                        int cameraPermission= ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA);
+                        if(cameraPermission== PackageManager.PERMISSION_GRANTED){
+                            play_camera();
+                        }
+                        else{
+                            requestPermission();
+                        }
+
+                    }
+                });
+                dialog.setContentView(R.layout.profile_dialog);
+                dialog.show();
             }
         });
 
+        //QR코드 생성
+        MultiFormatWriter multiFormatWriter=new MultiFormatWriter();
+        try {
+            int qrColor=0xFF6E917A;
+            int qrbackroundColor=0xFFF3D6AB;
 
-
-
-        vp_page.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tl_item));
-
-
-
-
-        ib_userprofile.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent= new Intent(getApplicationContext(),UserPageActivity.class);
-                    startActivity(intent);
+            BitMatrix bitMatrix=multiFormatWriter.encode("RUP", BarcodeFormat.QR_CODE,200,200);
+            Bitmap bitmap=Bitmap.createBitmap(bitMatrix.getWidth(),bitMatrix.getHeight(),Bitmap.Config.ARGB_8888);
+            for(int x=0; x<200;x++){
+                for(int y=0;y<200;y++){
+                    bitmap.setPixel(x,y,bitMatrix.get(x,y)? qrColor:qrbackroundColor);
                 }
-        });
-
-
+            }
+            QR_code.setImageBitmap(bitmap);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
 
 
     }
 
-     protected void settingitem(ViewPager v){
-            tablelayoutAdapter.addFragment(new MainTabFragment(),"홈");
-            tablelayoutAdapter.addFragment(new QrTabFragment(),"QR");
-            tablelayoutAdapter.addFragment(new GardenTabFragment(),"정원");
-            v.setAdapter(tablelayoutAdapter);
+    private void requestPermission(){
+        String []permissions={Manifest.permission.CAMERA};
+        ActivityCompat.requestPermissions(MainActivity.this,permissions,101);
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        //카메라
+        if(requestCode==101){
+           if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+               play_camera();
+           }
+           else{
+               System.out.println(grantResults[0]);
+
+           }
         }
+    }
+    private  void play_camera(){
+        if(file==null){
+            file=createFile();
+        }
+        Uri fileuri= FileProvider.getUriForFile(MainActivity.this,"org.techtown.huhaclife.fileprovider",file);
+        Intent intent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,fileuri);
+        if(intent.resolveActivity(getPackageManager())!=null){
+            startActivityForResult(intent,201);
+        }
+    }
+    private File createFile(){
+        String filename="userprofile.jpg";
+        File startDir= Environment.getExternalStorageDirectory();
+        File outFile =new File(startDir,filename);
+        return  outFile;
+    }
 
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==201&&requestCode==RESULT_OK){
+            BitmapFactory.Options options=new BitmapFactory.Options();
+            options.inSampleSize=8;
+            Bitmap bitmap=BitmapFactory.decodeFile(file.getAbsolutePath(),options);
+            userprofile.setImageBitmap(bitmap);
+        }
+    }
 }
