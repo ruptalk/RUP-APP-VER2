@@ -1,6 +1,7 @@
 package org.techtown.huhaclife;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,15 +13,18 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
@@ -53,6 +57,28 @@ public class MainActivity extends AppCompatActivity {
     private UserInfo userInfo;
     private ActivityResultLauncher<Intent> resultLauncher,resultLauncher2;
 
+    private Button test;
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("종료");
+        builder.setMessage("take-out컵 버릴 때 또 만나요!");
+        builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                moveTaskToBack(true) ;//테스크를 백그라운드로 이동
+                finishAndRemoveTask();//액티비티 종료+테스크 리스트에서 지우기
+                System.exit(0);
+
+            }
+        });
+        builder.show();
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +91,25 @@ public class MainActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference();
 
         uid = firebaseUsser.getUid().trim();
+
+        test=(Button)findViewById(R.id.btn_test);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SeedDialog dialog=new SeedDialog(MainActivity.this, new SeedDialog.SeedDialogListener() {
+                    @Override
+                    public void ContentTranslate(int seednumber) {
+                        String t=String.valueOf(seednumber);
+                        Toast.makeText(MainActivity.this,seednumber+"들고옴",Toast.LENGTH_SHORT).show();
+                    }
+                });
+                dialog.setContentView(R.layout.dialog_seed);
+                dialog.show();
+            }
+        });
+
+        //뒤로가기 버튼 두번 누르면 종료
+
 
         //사용자 프로필 둥글게 처리
         userprofile.setBackground(new ShapeDrawable(new OvalShape()));

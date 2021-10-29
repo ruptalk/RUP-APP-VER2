@@ -84,7 +84,6 @@ public class LoginTabFragment extends Fragment {
 
 }
 /*
-
 //애니메이션 설정
         student_id.setTranslationX(800);
                 student_pw.setTranslationX(800);
