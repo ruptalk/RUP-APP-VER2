@@ -112,7 +112,7 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UserInfo userInfo=snapshot.getValue(UserInfo.class);
-                    checklist=userInfo.getPlant();
+                    checklist=userInfo.getPlant(); //사용자의 식물 종류 list
 
                     TypedArray typedArray=getResources().obtainTypedArray(R.array.plant_list);
                     String[] names=getResources().getStringArray(R.array.plant_name);
@@ -120,7 +120,7 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
                     size= checklist.length();
 
                     for(int i=0;i<size;i++) {
-                        if (checklist.charAt(i) == '1') {
+                        if (checklist.charAt(i) == '1') { //사용자가 식물을 보유하고 있으면 1, 없으면 0
                             Log.d(TAG,"added "+i+" "+checklist.charAt(i));
                             plantList.add(new PlantItem(typedArray.getDrawable(0),names[i],languages[i]));
                         }

@@ -26,11 +26,9 @@ public class PlantDialog {
         dialog.setContentView(R.layout.plant_dialog);
         dialog.show();
 
-        //ImageView pimage=(ImageView)dialog.findViewById(R.id.img_plant);
+        //dialog에 띄울 식물 이름과 text 내용
         TextView pname=(TextView)dialog.findViewById(R.id.plant_dialog_name);
         TextView ptext=(TextView)dialog.findViewById(R.id.plant_dialog_text);
-        //TextView pdate=(TextView)dialog.findViewById(R.id.tv_plantDate);
-        //TextView planguage=(TextView)dialog.findViewById(R.id.tv_plantLanguage);
 
         String[] names=context.getResources().getStringArray(R.array.plant_name);
         String[] languages=context.getResources().getStringArray(R.array.plant_language);

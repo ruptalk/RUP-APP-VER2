@@ -46,6 +46,7 @@ public class PlantAdapter extends PagerAdapter {
         TextView plantName, plantLanguage;
         ImageView plantImage;
 
+        //card view에 띄울 item들 정의
         plantName=view.findViewById(R.id.plant_name);
         plantLanguage=view.findViewById(R.id.plant_language);
         plantImage=view.findViewById(R.id.plant_image);
@@ -54,10 +55,10 @@ public class PlantAdapter extends PagerAdapter {
         plantName.setText(items.get(position).getPlantName());
         plantLanguage.setText(items.get(position).getPlantLanguage());
 
+        //card view item 클릭 시 해당 item의 dialog 출력
         view.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context.getApplicationContext(), "클릭! position: "+position, Toast.LENGTH_SHORT).show();
                 PlantDialog plantDialog=new PlantDialog(context);
                 plantDialog.callFunction(items.get(position).getPlantName());
 
