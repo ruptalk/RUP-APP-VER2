@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,25 +37,41 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserPageActivity extends AppCompatActivity implements AutoPermissionsListener {
 
-    RecyclerView plantRecyclerView=null;
-    PlantAdapter plantAdapter=null;
     ArrayList<PlantItem> plantList;
-    GridLayoutManager gridLayoutManager;
     String uid, checklist="000000000000000";
     private String TAG="UserPageActivity";
+    ViewPager viewPager;
+    PlantAdapter adapter;
+    int size=0;
 
     private ImageView userprofile;
     private File file;
-    private DatabaseReference rootRef= FirebaseDatabase.getInstance().getReference();
-    private FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
+    private DatabaseReference rootRef;
+    private FirebaseUser user;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_userpage);
+
+        rootRef= FirebaseDatabase.getInstance().getReference();
+        user= FirebaseAuth.getInstance().getCurrentUser();
+        uid=user.getUid();
+        plantList=new ArrayList<PlantItem>();
+
+    }
 
     @Override
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_userpage);
+
+        adapter=new PlantAdapter(plantList, UserPageActivity.this);
+        viewPager=findViewById(R.id.plant_viewPager);
 
         //user profile
         userprofile=(ImageView)findViewById(R.id.iv_userprofile);
@@ -89,92 +106,30 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
             }
         });
 
-        //recycler view
-        plantRecyclerView=(RecyclerView)findViewById(R.id.garden_recycler_view);
-        plantList=new ArrayList<PlantItem>();
-
-        plantAdapter=new PlantAdapter(plantList);
-        plantRecyclerView.setAdapter(plantAdapter);
-
-        gridLayoutManager=new GridLayoutManager(getApplicationContext(),4);
-        plantRecyclerView.setLayoutManager(gridLayoutManager);
-
-        uid=user.getUid();
+        //plant cardview
         if(user!=null){
             rootRef.child("User").child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UserInfo userInfo=snapshot.getValue(UserInfo.class);
-                    checklist=userInfo.getPlant();
-                    Log.d(TAG,checklist);
-                    //[코드리뷰]to.꼬세지! from mini_0u0
-                    //이렇게 짜보는것도 괜찮을지도?[110-118 line확인]
-                    //values디렉터리->array파일 확인
-                    //Drawable ArrayList 참고함.
+                    checklist=userInfo.getPlant(); //사용자의 식물 종류 list
 
                     TypedArray typedArray=getResources().obtainTypedArray(R.array.plant_list);
                     String[] names=getResources().getStringArray(R.array.plant_name);
-                    int size= checklist.length();
+                    String[] languages=getResources().getStringArray(R.array.plant_language);
+                    size= checklist.length();
 
-                    for(int i=0;i<size;i++){
-                        if(checklist.charAt(i)=='1'){
-                            addPlantItem(typedArray.getDrawable(i),names[i]);
+                    for(int i=0;i<size;i++) {
+                        if (checklist.charAt(i) == '1') { //사용자가 식물을 보유하고 있으면 1, 없으면 0
+                            Log.d(TAG,"added "+i+" "+checklist.charAt(i));
+                            plantList.add(new PlantItem(typedArray.getDrawable(0),names[i],languages[i]));
                         }
-                        else{
-                            addPlantItem(typedArray.getDrawable('3'),names[3]);
-                        }
-                    }
-                    /*
-                    if (checklist.charAt(0) == '1') {
-                        Log.d(TAG,"들어옴0");
-                        addPlantItem(getDrawable(R.drawable.plant_cactus), "선인장");
-                    }
-                    if (checklist.charAt(1) == '1') {
-                        Log.d(TAG,"들어옴1");
-                        addPlantItem(getDrawable(R.drawable.plant_azalea), "진달래");
-                    }
-                    if (checklist.charAt(2) == '1') {
-                        Log.d(TAG,"들어옴2");
-                        addPlantItem(getDrawable(R.drawable.plant_sunflower), "해바라기");
-                    }
-                    if (checklist.charAt(3) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "백일홍");
-                    }
-                    if (checklist.charAt(4) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "수련");
-                    }
-                    if (checklist.charAt(5) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "수국");
-                    }
-                    if (checklist.charAt(6) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "당귀꽃");
-                    }
-                    if (checklist.charAt(7) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "백련");
-                    }
-                    if (checklist.charAt(8) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "도라지꽃");
-                    }
-                    if (checklist.charAt(9) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth), "금낭화");
-                    }
-                    if (checklist.charAt(10) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth),"참나리");
-                    }
-                    if (checklist.charAt(11) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth),"코스모스");
-                    }
-                    if (checklist.charAt(12) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth),"국화");
-                    }
-                    if (checklist.charAt(13) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth),"무궁화");
-                    }
-                    if (checklist.charAt(14) == '1') {
-                        addPlantItem(getDrawable(R.drawable.login_planet_earth),"철쭉");
                     }
 
-                     */
+                    viewPager.setAdapter(adapter);
+                    viewPager.setClipToPadding(false);
+                    viewPager.setPadding(130,100,130,50);
+                    viewPager.setPageMargin(50);
                 }
 
                 @Override
@@ -183,20 +138,6 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
                 }
             });
         }
-        //Log.d(TAG,checklist);
-        checklist="111011101001101";
-        plantCheck(checklist);
-
-        plantAdapter.notifyDataSetChanged();
-
-    }
-
-    public void addPlantItem(Drawable image, String name){
-        PlantItem item=new PlantItem();
-        item.setPlantImage(image);
-        item.setPlantName(name);
-
-        plantList.add(item);
     }
 
     @Override
@@ -235,54 +176,6 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
         File outFile=new File(startDir,filename);
 
         return outFile;
-    }
-
-    public void plantCheck(String checkstr) {
-        if (checkstr.charAt(0) == '1') {
-            addPlantItem(getDrawable(R.drawable.plant_cactus), "선인장");
-        }
-        if (checkstr.charAt(1) == '1') {
-            addPlantItem(getDrawable(R.drawable.plant_azalea), "진달래");
-        }
-        if (checkstr.charAt(2) == '1') {
-            addPlantItem(getDrawable(R.drawable.plant_sunflower), "해바라기");
-        }
-        if (checkstr.charAt(3) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "백일홍");
-        }
-        if (checkstr.charAt(4) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "수련");
-        }
-        if (checkstr.charAt(5) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "수국");
-        }
-        if (checkstr.charAt(6) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "당귀꽃");
-        }
-        if (checkstr.charAt(7) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "백련");
-        }
-        if (checkstr.charAt(8) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "도라지꽃");
-        }
-        if (checkstr.charAt(9) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth), "금낭화");
-        }
-        if (checkstr.charAt(10) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth),"참나리");
-        }
-        if (checkstr.charAt(11) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth),"코스모스");
-        }
-        if (checkstr.charAt(12) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth),"국화");
-        }
-        if (checkstr.charAt(13) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth),"무궁화");
-        }
-        if (checkstr.charAt(14) == '1') {
-            addPlantItem(getDrawable(R.drawable.login_planet_earth),"철쭉");
-        }
     }
 
 }
