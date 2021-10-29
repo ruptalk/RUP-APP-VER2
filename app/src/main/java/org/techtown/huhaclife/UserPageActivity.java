@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,14 +37,16 @@ import org.jetbrains.annotations.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UserPageActivity extends AppCompatActivity implements AutoPermissionsListener {
 
-    RecyclerView plantRecyclerView=null;
-    PlantAdapter plantAdapter=null;
     ArrayList<PlantItem> plantList;
-    GridLayoutManager gridLayoutManager;
     String uid, checklist="000000000000000";
     private String TAG="UserPageActivity";
+    ViewPager viewPager;
+    PlantAdapter adapter;
+    int size=0;
 
     private ImageView userprofile;
     private File file;
@@ -58,7 +61,7 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
         rootRef= FirebaseDatabase.getInstance().getReference();
         user= FirebaseAuth.getInstance().getCurrentUser();
         uid=user.getUid();
-
+        plantList=new ArrayList<PlantItem>();
 
     }
 
@@ -66,6 +69,9 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
     protected void onPostCreate(@Nullable Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setContentView(R.layout.activity_userpage);
+
+        adapter=new PlantAdapter(plantList, UserPageActivity.this);
+        viewPager=findViewById(R.id.plant_viewPager);
 
         //user profile
         userprofile=(ImageView)findViewById(R.id.iv_userprofile);
@@ -100,37 +106,30 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
             }
         });
 
-        //recycler view
-        plantRecyclerView=(RecyclerView)findViewById(R.id.garden_recycler_view);
-        plantList=new ArrayList<PlantItem>();
-
-        plantAdapter=new PlantAdapter(plantList);
-        plantRecyclerView.setAdapter(plantAdapter);
-
-        gridLayoutManager=new GridLayoutManager(getApplicationContext(),4);
-        plantRecyclerView.setLayoutManager(gridLayoutManager);
-
+        //plant cardview
         if(user!=null){
             rootRef.child("User").child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UserInfo userInfo=snapshot.getValue(UserInfo.class);
                     checklist=userInfo.getPlant();
-                    Log.d(TAG,checklist);
-                    //[코드리뷰]to.꼬세지! from mini_0u0
-                    //이렇게 짜보는것도 괜찮을지도?[110-118 line확인]
-                    //values디렉터리->array파일 확인
-                    //Drawable ArrayList 참고함.
 
                     TypedArray typedArray=getResources().obtainTypedArray(R.array.plant_list);
                     String[] names=getResources().getStringArray(R.array.plant_name);
-                    int size= checklist.length();
+                    String[] languages=getResources().getStringArray(R.array.plant_language);
+                    size= checklist.length();
 
                     for(int i=0;i<size;i++) {
                         if (checklist.charAt(i) == '1') {
-                            addPlantItem(typedArray.getDrawable(i), names[i]);
+                            Log.d(TAG,"added "+i+" "+checklist.charAt(i));
+                            plantList.add(new PlantItem(typedArray.getDrawable(0),names[i],languages[i]));
                         }
                     }
+
+                    viewPager.setAdapter(adapter);
+                    viewPager.setClipToPadding(false);
+                    viewPager.setPadding(130,100,130,50);
+                    viewPager.setPageMargin(50);
                 }
 
                 @Override
@@ -139,25 +138,6 @@ public class UserPageActivity extends AppCompatActivity implements AutoPermissio
                 }
             });
         }
-
-        plantAdapter.setOnItemClickListener(new PlantAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View v, int pos) {
-                PlantDialog plantDialog=new PlantDialog(UserPageActivity.this);
-                plantDialog.callFunction(plantList.get(pos).getPlantName(), checklist.length());
-            }
-        });
-
-        plantAdapter.notifyDataSetChanged();
-
-    }
-
-    public void addPlantItem(Drawable image, String name){
-        PlantItem item=new PlantItem();
-        item.setPlantImage(image);
-        item.setPlantName(name);
-
-        plantList.add(item);
     }
 
     @Override

@@ -4,86 +4,73 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> {
+public class PlantAdapter extends PagerAdapter {
 
-    private ArrayList<PlantItem> plantList=null;
+    private ArrayList<PlantItem> items;
+    private LayoutInflater layoutInflater;
+    private Context context;
 
-    //리스너 객체 참조를 저장하는 변수
-    private OnItemClickListener mListener=null;
-
-    //커스텀 리스너(Custom Listener) 인터페이스 정의
-    public interface OnItemClickListener{
-        void onItemClick(View v, int pos);
-    }
-
-    //OnItemClickListener 리스너 객체 참조를 어댑터에 전달하는 메서드
-    public void setOnItemClickListener(OnItemClickListener listener){
-        this.mListener=listener;
-    }
-
-    public class ViewHolder extends RecyclerView.ViewHolder{
-        ImageView plantImage;
-        TextView plantName;
-
-        ViewHolder(View view){
-            super(view);
-
-            plantImage=view.findViewById(R.id.plantImage);
-            plantName=view.findViewById(R.id.plantName);
-
-            view.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    int pos=getAdapterPosition();
-                    if(pos!=RecyclerView.NO_POSITION){
-                        if(mListener!=null){
-                            mListener.onItemClick(v,pos);
-                        }
-                    }
-                }
-            });
-        }
-    }
-
-    PlantAdapter(ArrayList<PlantItem> list){
-        plantList=list;
-    }
-
-    @NonNull
-    @Override
-    public PlantAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context=parent.getContext();
-        LayoutInflater inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-        View view= inflater.inflate(R.layout.plant_recycler_item,parent, false);
-        PlantAdapter.ViewHolder viewHolder=new PlantAdapter.ViewHolder(view);
-        return viewHolder;
-    }
-
-    //실제 각 뷰 홀더(position)에 데이터를 연결해주는 함수
-    @Override
-    public void onBindViewHolder(@NonNull PlantAdapter.ViewHolder holder, int position) {
-        PlantItem item=plantList.get(position);
-
-        holder.plantImage.setImageDrawable(item.getPlantImage());
-        holder.plantName.setText(item.getPlantName());
+    public PlantAdapter(ArrayList<PlantItem> items, Context context){
+        this.items=items;
+        this.context=context;
     }
 
     @Override
-    public int getItemCount() {
-        if(plantList!=null) {
-            return plantList.size();
+    public int getCount() {
+        if(items!=null) {
+            return items.size();
         }
         return 0;
     }
 
+    @Override
+    public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        return view.equals(object);
+    }
+
+    @NonNull
+    @Override
+    public Object instantiateItem(@NonNull ViewGroup container, int position) {
+        layoutInflater=LayoutInflater.from(context);
+        View view=layoutInflater.inflate(R.layout.plant_recycler_item, container, false);
+
+        TextView plantName, plantLanguage;
+        ImageView plantImage;
+
+        plantName=view.findViewById(R.id.plant_name);
+        plantLanguage=view.findViewById(R.id.plant_language);
+        plantImage=view.findViewById(R.id.plant_image);
+
+        plantImage.setImageDrawable(items.get(position).getPlantImage());
+        plantName.setText(items.get(position).getPlantName());
+        plantLanguage.setText(items.get(position).getPlantLanguage());
+
+        view.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(context.getApplicationContext(), "클릭! position: "+position, Toast.LENGTH_SHORT).show();
+                PlantDialog plantDialog=new PlantDialog(context);
+                plantDialog.callFunction(items.get(position).getPlantName());
+
+            }
+        });
+
+        container.addView(view,0);
+        return view;
+
+    }
+
+    @Override
+    public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+        container.removeView((View)object);
+    }
 }
