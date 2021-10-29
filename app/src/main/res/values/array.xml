@@ -53,4 +53,14 @@
         <item>자제, 사랑의 즐거움</item>
         <item>나를 사랑해주세요</item>
     </string-array>
+    <array name= "seed">
+        <item>@drawable/seed1</item>
+        <item>@drawable/seed2</item>
+        <item>@drawable/seed3</item>
+        <item>@drawable/seed4</item>
+        <item>@drawable/seed5</item>
+        <item>@drawable/seed6</item>
+        <item>@drawable/seed7</item>
+        <item>@drawable/seed8</item>
+    </array>
 </resources>

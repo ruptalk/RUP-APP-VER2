@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_dialog"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+     <TextView
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+          android:text="씨앗을 선택해!"
+         android:textColor="@color/black"
+          android:layout_gravity="center"
+          android:textSize="30sp"
+          android:fontFamily="@font/dhsrmfdlvdmlduscp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_seedlist"
+        android:layout_width="300dp"
+        android:layout_height="120dp"/>
+
+     <Button
+         android:id="@+id/btn_seeds"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:layout_gravity="center"
+         android:fontFamily="@font/dhsrmfdlvdmlduscp"
+         android:text="선택" />
+
+
+</LinearLayout>
