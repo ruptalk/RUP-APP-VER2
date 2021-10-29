@@ -2,53 +2,136 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffff"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/c1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent=".17"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_userprofile"
+            android:backgroundTint="@color/black"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent=".2"
+            app:layout_constraintWidth_percent=".1"
+            app:layout_constraintHorizontal_bias="0.1"
+            app:layout_constraintVertical_bias="0.5"/>
+
+        <TextView
+            android:id="@+id/tv_u1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toRightOf="@id/iv_userprofile"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias=".3"
+            android:layout_marginLeft="30dp"
+            android:text="재활용 횟수"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/recycle_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_u1"
+            app:layout_constraintLeft_toLeftOf="@id/tv_u1"
+            app:layout_constraintRight_toRightOf="@id/tv_u1"
+            android:layout_marginTop="5dp"
+            android:text="110"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/tv_u2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias=".3"
+            android:layout_marginRight="70dp"
+            android:text="포인트"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+        <TextView
+            android:id="@+id/point_userpage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_u2"
+            app:layout_constraintLeft_toLeftOf="@id/tv_u2"
+            app:layout_constraintRight_toRightOf="@id/tv_u2"
+            android:layout_marginTop="5dp"
+            android:text="1240"
+            android:textSize="25dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="#E1ECD5"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".35"
+        app:layout_constraintHeight_percent=".13"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/c1">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_1"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHeight_percent=".5"
+        <TextView
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginLeft="25dp"
+            android:text="나만의 정원"
+            android:textSize="35dp"
+            android:textStyle="bold"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
 
-            <ImageView
-                android:id="@+id/iv_userprofile"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:background="@drawable/userprofile_shape"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent=".9"
-                app:layout_constraintHorizontal_bias=".1"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent=".3" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv1"
+            android:layout_marginLeft="28dp"
+            android:layout_marginTop="5dp"
+            android:text="컵을 분리수거하고 식물을 키워 정원을 꾸며보세요!"
+            android:textSize="25dp"
+            android:gravity="bottom"
+            android:textColor="@color/black"
+            android:fontFamily="@font/font_dhsrmfdlv"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/garden_recycler_view"
-        android:layout_width="match_parent"
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/plant_viewPager"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:background="#AEBF99"
+        android:layout_marginBottom="4dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent=".65"
+        app:layout_constraintHeight_percent=".73"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

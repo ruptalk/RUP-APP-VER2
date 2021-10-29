@@ -13,94 +13,94 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent=".75"
-        app:layout_constraintHeight_percent=".2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        >
-        <ImageView
-            android:id="@+id/iv_userprofile"
-            android:layout_width="90dp"
-            android:layout_height="90dp"
-            android:layout_margin="20dp"
-            android:src="@drawable/sy"
-            android:scaleType="fitXY"
-            />
         <LinearLayout
-            android:layout_width="150dp"
-            android:layout_height="100dp"
-            android:layout_marginTop="20dp"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/tv_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="RUP님"
-                android:textStyle="bold"
-                android:fontFamily="@font/dhsrmfdlvdmlduscp"
-                android:textSize="50sp"
-                android:textColor="@color/green2"/>
-            <TextView
-                android:id="@+id/tv_userpoint"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1501P >"
-                android:fontFamily="@font/dhsrmfdlvdmlduscp"
-                android:textSize="40sp"
-                android:textColor="@color/green2"/>
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent=".75"
+            app:layout_constraintHeight_percent=".2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <ImageView
+                android:id="@+id/iv_userprofile"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_margin="20dp"
+                android:src="@drawable/sy"
+                android:scaleType="fitXY"
+                />
+            <LinearLayout
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RUP님"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/dhsrmfdlvdmlduscp"
+                    android:textSize="50sp"
+                    android:textColor="@color/green2"/>
+                <TextView
+                    android:id="@+id/tv_userpoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1501P >"
+                    android:fontFamily="@font/dhsrmfdlvdmlduscp"
+                    android:textSize="40sp"
+                    android:textColor="@color/green2"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/ib_info"
+            android:background="@drawable/speaker2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:rotation="-10"
+            app:layout_constraintWidth_percent=".1"
+            app:layout_constraintHeight_percent=".07"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias=".9"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="30dp"/>
 
-    <ImageButton
-        android:id="@+id/ib_info"
-        android:background="@drawable/speaker2"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:rotation="-10"
-        app:layout_constraintWidth_percent=".1"
-        app:layout_constraintHeight_percent=".07"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias=".9"
-        android:layout_marginTop="25dp"
-        android:layout_marginRight="30dp"/>
+        <ProgressBar
+            android:id="@+id/pb"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintHeight_percent=".7"
+            app:layout_constraintWidth_percent=".8"
+            app:layout_constraintVertical_bias=".65"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:background="@drawable/progressbar_circle_background"
+            android:progressDrawable="@drawable/progressbar_circle"
+            android:max="100"
+            android:progress="50"
+            android:rotation="-90"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/pb"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent=".7"
-        app:layout_constraintWidth_percent=".8"
-        app:layout_constraintVertical_bias=".65"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:background="@drawable/progressbar_circle_background"
-        android:progressDrawable="@drawable/progressbar_circle"
-        android:max="100"
-        android:progress="50"
-        android:rotation="-90"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <com.airbnb.lottie.LottieAnimationView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintWidth_percent=".6"
-        app:layout_constraintHeight_percent=".5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias=".65"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:lottie_autoPlay="true"
-        app:lottie_loop="true"
-        app:lottie_fileName="palnt.json"/>
+        <com.airbnb.lottie.LottieAnimationView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintWidth_percent=".6"
+            app:layout_constraintHeight_percent=".5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintVertical_bias=".65"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:lottie_autoPlay="true"
+            app:lottie_loop="true"
+            app:lottie_fileName="palnt.json"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -110,14 +110,14 @@
         android:clickable="true"
         android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/qr_handle"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:src="@drawable/qr_code"
-        android:layout_gravity="center"
-        android:tint="@color/gray"
-        />
+        <ImageView
+            android:id="@+id/qr_handle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/qr_code"
+            android:layout_gravity="center"
+            android:tint="@color/gray"
+            />
         <ImageView
             android:id="@+id/qr"
             android:layout_width="200dp"

@@ -174,13 +174,13 @@ public class MainActivity extends AppCompatActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //카메라
         if(requestCode==101){
-           if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
-               play_camera();
-           }
-           else{
-               System.out.println(grantResults[0]);
+            if(grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                play_camera();
+            }
+            else{
+                System.out.println(grantResults[0]);
 
-           }
+            }
         }
         //앨범
         else if(requestCode==102){

@@ -2,6 +2,9 @@ package org.techtown.huhaclife;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -10,44 +13,35 @@ import android.widget.TextView;
 
 public class PlantDialog {
     private Context context;
+    private String TAG="PlantDialog";
 
-    public PlantDialog(){
-
+    public PlantDialog(Context context){
+        this.context=context;
     }
 
-    public void callFunction(String plantName){
+    public void callFunction(String name){
         final Dialog dialog=new Dialog(context);
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.plant_dialog);
         dialog.show();
 
-        ImageView pimage=(ImageView)dialog.findViewById(R.id.img_plant);
-        TextView pname=(TextView)dialog.findViewById(R.id.tv_plantName);
-        TextView pdate=(TextView)dialog.findViewById(R.id.tv_plantDate);
-        TextView planguage=(TextView)dialog.findViewById(R.id.tv_plantLanguage);
+        //dialog에 띄울 식물 이름과 text 내용
+        TextView pname=(TextView)dialog.findViewById(R.id.plant_dialog_name);
+        TextView ptext=(TextView)dialog.findViewById(R.id.plant_dialog_text);
 
-        if(plantName.equals("선인장")){
-            pimage.setImageResource(R.drawable.plant_cactus);
-            pname.setText("이름: 선인장");
-            pdate.setText("키운 날짜: 21/10/03");
-            planguage.setText("꽃말: 타오르는 열정");
-        }
-        else if(plantName.equals("진달래")){
-            pimage.setImageResource(R.drawable.plant_azalea);
-            pname.setText("이름: 진달래");
-            pdate.setText("키운 날짜: 21/10/05");
-            planguage.setText("꽃말: 사랑의 기쁨");
-        }
-        else{
-            pimage.setImageResource(R.drawable.p_logo);
-            pname.setText("이름: ");
-            pdate.setText("키운 날짜: ");
-            planguage.setText("꽃말: ");
+        String[] names=context.getResources().getStringArray(R.array.plant_name);
+        String[] languages=context.getResources().getStringArray(R.array.plant_language);
+
+        for(int i=0; i<15; i++){ //나중에 checklist 개수에 대해서도 정리해야 할듯?
+            if(name.equals(names[i])){
+                Log.d(TAG,names[i]+"\n"+languages[i]);
+                pname.setText(names[i]);
+                ptext.setText(languages[i]);
+            }
         }
 
-
-        final Button cancelButton=(Button)dialog.findViewById(R.id.btn_close);
+        final Button cancelButton=(Button)dialog.findViewById(R.id.btn_dialog_close);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,42 +50,3 @@ public class PlantDialog {
         });
     }
 }
-
-/*
-public class PlantFragmentDialog extends DialogFragment {
-    private Fragment fragment;
-    private static final String TAG="PlantfragmentDialog";
-    private static final String MAIN_MSG="dialog_plant";
-    private String plantMsg;
-
-    public static PlantFragmentDialog newInstance(String mainMsg){
-        Bundle bundle=new Bundle();
-        bundle.putString(MAIN_MSG, mainMsg);
-
-        PlantFragmentDialog fragment=new PlantFragmentDialog();
-        fragment.setArguments(bundle);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if(getArguments()!=null){
-            plantMsg=getArguments().getString(MAIN_MSG);
-        }
-    }
-
-    @NonNull
-    @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        View view=getActivity().getLayoutInflater().inflate(R.layout.plant_dialog,null);
-
-        builder.setView(view);
-        Dialog dialog=builder.create();
-        return dialog;
-    }
-}
-
-
- */
