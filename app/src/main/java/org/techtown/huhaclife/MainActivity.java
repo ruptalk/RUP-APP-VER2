@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -39,7 +40,7 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
-    private ImageView QR_code,userprofile;
+    private ImageView QR_code,userprofile,info;
     private TextView username,userpoint;
     private File file;
     private FirebaseUser firebaseUsser= FirebaseAuth.getInstance().getCurrentUser();
@@ -49,9 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private StorageReference storageReference;
     public String uid;
     private UserInfo userInfo;
-
-
     private Button test;
+
 
     //뒤로가기 버튼 두번 누르면 종료
     @Override
@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
         userprofile = (ImageView) findViewById(R.id.iv_userprofile);
         username = (TextView) findViewById(R.id.tv_username);
         userpoint = (TextView) findViewById(R.id.tv_userpoint);
+        info=(ImageButton)findViewById(R.id.ib_info);
         databaseReference = firebaseDatabase.getReference();
         firebaseStorage=FirebaseStorage.getInstance();
         storageReference=firebaseStorage.getReference();
@@ -106,6 +107,14 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+        //알람버튼
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(MainActivity.this,AlarmActivity.class);
+                startActivity(intent);
+            }
+        });
 
 
         //사용자 프로필 둥글게 처리
@@ -127,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
             });
 
         }
-        databaseReference.child("User").child(uid).addListenerForSingleValueEvent(new ValueEventListener() {
+        databaseReference.child("User").child(uid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userInfo = snapshot.getValue(UserInfo.class);
@@ -142,6 +151,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+
+
 
 
         //사용자 프로필
@@ -164,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
             int qrColor=0xFF6E917A;
             int qrbackroundColor=0xFFF3D6AB;
 
-            BitMatrix bitMatrix=multiFormatWriter.encode(useremail, BarcodeFormat.QR_CODE,200,200);
+            BitMatrix bitMatrix=multiFormatWriter.encode(uid, BarcodeFormat.QR_CODE,200,200);
             Bitmap bitmap=Bitmap.createBitmap(bitMatrix.getWidth(),bitMatrix.getHeight(),Bitmap.Config.ARGB_8888);
             for(int x=0; x<200;x++){
                 for(int y=0;y<200;y++){
