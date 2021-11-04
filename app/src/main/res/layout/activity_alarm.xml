@@ -22,19 +22,10 @@
         android:fontFamily="@font/font_dhsrmfdlv"/>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_notice"
+        android:id="@+id/rv_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/tv_a1"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyceler_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/rv_notice"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"/>
 

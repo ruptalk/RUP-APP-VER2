@@ -31,7 +31,7 @@ public class AlarmActivity extends AppCompatActivity {
 
     Context context;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView recyclerView=null;
+    RecyclerView alarmRecyclerView=null;
     AlarmAdapter adapter=null;
     ArrayList<AlarmItem> arrayList=new ArrayList<>();
 
@@ -43,11 +43,12 @@ public class AlarmActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
 
-        recyclerView=(RecyclerView)findViewById(R.id.recyceler_view);
+        //알람 recyclerview
+        alarmRecyclerView=(RecyclerView)findViewById(R.id.rv_alarm);
         layoutManager=new LinearLayoutManager(this);
         ((LinearLayoutManager) layoutManager).setReverseLayout(true);
         ((LinearLayoutManager) layoutManager).setStackFromEnd(true);
-        recyclerView.setLayoutManager(layoutManager);
+        alarmRecyclerView.setLayoutManager(layoutManager);
 
         adapter=new AlarmAdapter(context, arrayList);
 
@@ -68,7 +69,7 @@ public class AlarmActivity extends AppCompatActivity {
 
                 arrayList.add(new AlarmItem("1point가 적립되었습니다.",month, day));
                 adapter=new AlarmAdapter(context, arrayList);
-                recyclerView.setAdapter(adapter);
+                alarmRecyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -76,7 +77,7 @@ public class AlarmActivity extends AppCompatActivity {
 
             }
         });
-        recyclerView.setAdapter(adapter);
+        alarmRecyclerView.setAdapter(adapter);
     }
 
     private void initDataset() {

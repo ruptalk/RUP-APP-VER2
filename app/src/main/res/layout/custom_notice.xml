@@ -11,14 +11,26 @@
         android:layout_height="match_parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="5dp"
-        android:src="@drawable/p_logo"/>
+        android:src="@drawable/speaker"/>
+
+    <TextView
+        android:id="@+id/tv_notice"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        app:layout_constraintLeft_toRightOf="@id/img_n1"
+        android:layout_marginLeft="5dp"
+        android:text="공지사항"
+        android:textColor="@color/black"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        app:layout_constraintLeft_toRightOf="@id/img_n1"
+        android:gravity="center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
-        android:text="공지사항"
+        android:text="날짜"
         android:textColor="@color/black"/>
 
 
