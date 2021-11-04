@@ -1,9 +1,12 @@
 package org.techtown.huhaclife;
 
+import android.graphics.drawable.Drawable;
+
 public class AlarmItem {
-    public String content="1point가 적립되었습니다.";
-    public String month="9";
-    public String day="26";
+    public Drawable icon;
+    public String content;
+    public String month;
+    public String day;
 
     public AlarmItem(String content, String month, String day){
         this.content=content;

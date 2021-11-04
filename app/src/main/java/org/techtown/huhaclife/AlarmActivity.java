@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,9 @@ public class AlarmActivity extends AppCompatActivity {
     ArrayList<AlarmItem> arrayList=new ArrayList<>();
 
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, mReference;
+    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
+    ChildEventListener childEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,34 @@ public class AlarmActivity extends AppCompatActivity {
         // 변화가 있다면 onDataChange를 호출해주므로 전역변수 값도 그때그때 바뀜.
         uid=user.getUid();
         databaseReference= FirebaseDatabase.getInstance().getReference();
-        databaseReference.child("User").child(uid).addValueEventListener(new ValueEventListener() {
+
+        mReference=firebaseDatabase.getReference("Notice");
+        mReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        })
+
+        databaseReference.child("Notice").child("notice").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        //point 변화가 있을 때 알람 기능 구현
+        databaseReference.child("User").child(uid).child("point").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 UserInfo userInfo=snapshot.getValue(UserInfo.class);
