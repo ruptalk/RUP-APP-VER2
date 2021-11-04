@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class SeedAdapter extends RecyclerView.Adapter<SeedAdapter.ViewHolder> implements OnPersonItemClickListener {
     ArrayList<Drawable>items=new ArrayList<Drawable>();
     static OnPersonItemClickListener listener;
+    static int check=-1;
 
     @NonNull
     @Override
@@ -61,6 +62,7 @@ public class SeedAdapter extends RecyclerView.Adapter<SeedAdapter.ViewHolder> im
                 public void onClick(View view) {
                     int position=getAbsoluteAdapterPosition();
                     view.setBackgroundColor(Color.YELLOW);
+
 
                     if(listener!=null){
                         listener.onItemClick(ViewHolder.this,view,position);
