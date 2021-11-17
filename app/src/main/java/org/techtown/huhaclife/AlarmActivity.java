@@ -1,6 +1,7 @@
 package org.techtown.huhaclife;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Comment;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -32,14 +35,12 @@ public class AlarmActivity extends AppCompatActivity {
 
     Context context;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView alarmRecyclerView=null;
+    private static RecyclerView alarmRecyclerView=null;
     AlarmAdapter adapter=null;
     ArrayList<AlarmItem> arrayList=new ArrayList<>();
 
     FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-    DatabaseReference databaseReference, mReference;
-    FirebaseDatabase firebaseDatabase=FirebaseDatabase.getInstance();
-    ChildEventListener childEventListener;
+    DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,27 +56,44 @@ public class AlarmActivity extends AppCompatActivity {
 
         adapter=new AlarmAdapter(context, arrayList);
 
-        //addValueEventListener : 실시간으로 데이터베이스의 값 변화 감지해서
-        // 변화가 있다면 onDataChange를 호출해주므로 전역변수 값도 그때그때 바뀜.
         uid=user.getUid();
         databaseReference= FirebaseDatabase.getInstance().getReference();
 
-        mReference=firebaseDatabase.getReference("Notice");
-        mReference.addValueEventListener(new ValueEventListener() {
+        //공지사항 Notice Firebase 값 수신
+        databaseReference.child("Notice").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String noticeText= (String) snapshot.getValue();
+                arrayList.add(new AlarmItem(noticeText));
+                Log.d(TAG,noticeText);
+                adapter=new AlarmAdapter(context, arrayList);
+                alarmRecyclerView.setAdapter(adapter);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG,"공지사항 변경!");
+                String noticeNum=snapshot.getKey();
+                String noticeText= (String) snapshot.getValue();
+                if(noticeNum.equals("notice1")){
+
+                }
+                else if(noticeNum.equals("notice2")){
+
+                }
+                else if(noticeNum.equals("notice3")){
+
+                }
 
             }
-        })
 
-        databaseReference.child("Notice").child("notice").addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
 
@@ -85,29 +103,64 @@ public class AlarmActivity extends AppCompatActivity {
             }
         });
 
-        //point 변화가 있을 때 알람 기능 구현
-        databaseReference.child("User").child(uid).child("point").addValueEventListener(new ValueEventListener() {
+        databaseReference.child("User").addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG,"here1");
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d(TAG,"here2");
+
                 UserInfo userInfo=snapshot.getValue(UserInfo.class);
                 changed_point=userInfo.getPoint();
-                Log.d(TAG,"point!!!!: "+changed_point);
-
-
-                initDataset(); //오늘 날짜 받아오기
-                Log.d(TAG, month + " " + day);
-
+               // changed_point= (int) snapshot.getValue();
+                initDataset();
                 arrayList.add(new AlarmItem("1point가 적립되었습니다.",month, day));
                 adapter=new AlarmAdapter(context, arrayList);
                 alarmRecyclerView.setAdapter(adapter);
             }
 
             @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
-        alarmRecyclerView.setAdapter(adapter);
+
+        //point 변화가 있을 때 알람 recyclerview data 추가
+//        databaseReference.child("User").child(uid).child("point").addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                UserInfo userInfo=snapshot.getValue(UserInfo.class);
+//                changed_point=userInfo.getPoint();
+//                Log.d(TAG,"point!!!!: "+changed_point);
+//
+//
+//                initDataset(); //오늘 날짜 받아오기
+//                Log.d(TAG, month + " " + day);
+//
+//                arrayList.add(new AlarmItem("1point가 적립되었습니다.",month, day));
+//                adapter=new AlarmAdapter(context, arrayList);
+//                alarmRecyclerView.setAdapter(adapter);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+
     }
 
     private void initDataset() {
