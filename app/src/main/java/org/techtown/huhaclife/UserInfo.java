@@ -5,6 +5,7 @@ public class UserInfo {
     private String pw;
     private String name;
     private String plant;
+    private int count;
     private int point;
 
     public int getPoint() {
@@ -43,5 +44,7 @@ public class UserInfo {
 
     public void setPlant(String plant) { this.plant=plant; }
 
+    public int getCount() { return count; }
 
+    public void setCount(int count) { this.count=count; }
 }

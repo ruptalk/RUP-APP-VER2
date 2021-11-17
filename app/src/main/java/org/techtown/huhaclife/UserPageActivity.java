@@ -15,6 +15,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -42,6 +43,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -54,8 +57,9 @@ public class UserPageActivity extends AppCompatActivity  {
     private String TAG="UserPageActivity";
     ViewPager viewPager;
     PlantAdapter adapter;
-    int size=0;
+    private int rCount, point, size=15;
 
+    private TextView recycleCountTextView, userPointTextView;
     private ImageView userprofile;
     private File file;
     private DatabaseReference rootRef;
@@ -69,15 +73,15 @@ public class UserPageActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_userpage);
 
+        recycleCountTextView=(TextView)findViewById(R.id.recycle_count);
+        userPointTextView=(TextView)findViewById(R.id.point_userpage);
+
         rootRef= FirebaseDatabase.getInstance().getReference();
         user= FirebaseAuth.getInstance().getCurrentUser();
         storage=FirebaseStorage.getInstance();
         storageReference=storage.getReference();
         uid=user.getUid();
         plantList=new ArrayList<PlantItem>();
-
-
-
 
         adapter=new PlantAdapter(plantList, UserPageActivity.this);
         viewPager=findViewById(R.id.plant_viewPager);
@@ -118,30 +122,32 @@ public class UserPageActivity extends AppCompatActivity  {
             }
         });
 
-        //plant cardview
+        //user profile and plant cardview
         if(user!=null){
             rootRef.child("User").child(uid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     UserInfo userInfo=snapshot.getValue(UserInfo.class);
-                    checklist=userInfo.getPlant(); //사용자의 식물 종류 list
 
+                    //user profile
+                    rCount=userInfo.getCount(); //재활용 횟수
+                    point=userInfo.getPoint(); //포인트
+                    recycleCountTextView.setText(""+rCount);
+                    userPointTextView.setText(""+point);
+
+                    //plant cardview
+                    checklist=userInfo.getPlant(); //사용자의 식물 종류 list
                     TypedArray typedArray=getResources().obtainTypedArray(R.array.plant_list);
                     String[] names=getResources().getStringArray(R.array.plant_name);
                     String[] languages=getResources().getStringArray(R.array.plant_language);
                     size= checklist.length();
 
-                    for(int i=0;i<size;i++) {
-                        if (checklist.charAt(i) == '1') { //사용자가 식물을 보유하고 있으면 1, 없으면 0
-                            Log.d(TAG,"added "+i+" "+checklist.charAt(i));
-                            plantList.add(new PlantItem(typedArray.getDrawable(0),names[i],languages[i]));
-                        }
-                    }
-
-                    viewPager.setAdapter(adapter);
-                    viewPager.setClipToPadding(false);
-                    viewPager.setPadding(130,100,130,50);
-                    viewPager.setPageMargin(50);
+                    cardviewSetting(size);
+//
+//                    viewPager.setAdapter(adapter);
+//                    viewPager.setClipToPadding(false);
+//                    viewPager.setPadding(130,100,130,50);
+//                    viewPager.setPageMargin(50);
                 }
 
                 @Override
@@ -154,6 +160,7 @@ public class UserPageActivity extends AppCompatActivity  {
         //사용자 프로필 둥글게 처리
         userprofile.setBackground(new ShapeDrawable(new OvalShape()));
         userprofile.setClipToOutline(true);
+
         //프로필 설정
         if(uid!=null){
             System.out.println("여기가 반복해서 실행되나?");
@@ -198,6 +205,7 @@ public class UserPageActivity extends AppCompatActivity  {
                         }
                     }
                 });
+
         //앨범 접근을 하기 위한 콜백함수 처리
         resultLauncher2=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 new ActivityResultCallback<ActivityResult>() {
@@ -298,5 +306,27 @@ public class UserPageActivity extends AppCompatActivity  {
         return  outFile;
     }
 
+    //plant cardview 세팅함수
+    private void cardviewSetting(int size){
+
+        TypedArray typedArray=getResources().obtainTypedArray(R.array.plant_list);
+        String[] names=getResources().getStringArray(R.array.plant_name);
+        String[] languages=getResources().getStringArray(R.array.plant_language);
+        int bColor;
+
+        for(int i=0;i<size;i++) {
+            bColor=1;
+            if (checklist.charAt(i) == '0') { //사용자가 식물을 보유하고 있으면 1, 없으면 0
+                Log.d(TAG,"added "+i+" "+checklist.charAt(i));
+                bColor=0;
+            }
+            plantList.add(new PlantItem(typedArray.getDrawable(0),names[i],languages[i],bColor));
+        }
+
+        viewPager.setAdapter(adapter);
+        viewPager.setClipToPadding(false);
+        viewPager.setPadding(130,100,130,50);
+        viewPager.setPageMargin(50);
+    }
 
 }
