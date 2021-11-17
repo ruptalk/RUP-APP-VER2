@@ -22,6 +22,7 @@ public class SeedDialog extends Dialog {
     private GridLayoutManager gridLayoutManager;
     public static int seednumber=-1;
     private SeedDialogListener seedDialogListener;
+    public MainActivity mainActivity;
 
     public interface SeedDialogListener{
         void ContentTranslate(int a);
@@ -61,6 +62,9 @@ public class SeedDialog extends Dialog {
             @Override
             public void onItemClick(SeedAdapter.ViewHolder holder, View view, int position) {
                 seednumber=position;
+                //((MainActivity) getContext()).plant.setAnimation("plant7.json");
+                //dismiss();
+
             }
         });
 
@@ -69,7 +73,6 @@ public class SeedDialog extends Dialog {
             public void onClick(View view) {
                 if(seednumber!=-1){
 
-                    //씨앗 선택된거 배경 설정해주기
                     seedDialogListener.ContentTranslate(seednumber);
                     dismiss();
 
