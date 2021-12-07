@@ -43,8 +43,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -58,7 +56,6 @@ public class UserPageActivity extends AppCompatActivity  {
     ViewPager viewPager;
     PlantAdapter adapter;
     private int rCount, point, size=15;
-
     private TextView recycleCountTextView, userPointTextView;
     private ImageView userprofile;
     private File file;
@@ -101,9 +98,7 @@ public class UserPageActivity extends AppCompatActivity  {
                         } else {
                             requestPermission();
                         }
-
                     }
-
                     @Override
                     public void AlbumClick() {
                         int albumPermission = ActivityCompat.checkSelfPermission(UserPageActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
@@ -113,12 +108,10 @@ public class UserPageActivity extends AppCompatActivity  {
                             String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE};
                             ActivityCompat.requestPermissions(UserPageActivity.this, permissions, 102);
                         }
-
                     }
                 });
                 dialog.setContentView(R.layout.profile_dialog);
                 dialog.show();
-
             }
         });
 
@@ -143,7 +136,6 @@ public class UserPageActivity extends AppCompatActivity  {
                     size= checklist.length();
 
                     cardviewSetting(size);
-//
 //                    viewPager.setAdapter(adapter);
 //                    viewPager.setClipToPadding(false);
 //                    viewPager.setPadding(130,100,130,50);
@@ -172,7 +164,6 @@ public class UserPageActivity extends AppCompatActivity  {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-
                 }
             });
 
@@ -236,9 +227,6 @@ public class UserPageActivity extends AppCompatActivity  {
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             }
-
-
-
                         }
                     }
                 });
@@ -262,7 +250,6 @@ public class UserPageActivity extends AppCompatActivity  {
             }
             else{
                 System.out.println(grantResults[0]);
-
             }
         }
         //앨범
@@ -272,7 +259,6 @@ public class UserPageActivity extends AppCompatActivity  {
             }
             else{
                 System.out.println(grantResults[0]);
-
             }
         }
     }

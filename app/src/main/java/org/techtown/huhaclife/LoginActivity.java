@@ -8,19 +8,30 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import com.airbnb.lottie.LottieAnimationView;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.kakao.sdk.auth.model.OAuthToken;
@@ -44,14 +55,13 @@ public class LoginActivity extends AppCompatActivity {
     private DatabaseReference reference;
     private float v=0; //애니메이션 투명도 지정
     final TablelayoutAdapter adapter=new TablelayoutAdapter(getSupportFragmentManager());
+    private ActivityResultLauncher<Intent> resultLauncher;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-
 
         layoutBottomSheet=(ConstraintLayout) findViewById(R.id.bottomsheet);
         sheetBehavior=BottomSheetBehavior.from(layoutBottomSheet);
@@ -67,22 +77,65 @@ public class LoginActivity extends AppCompatActivity {
         reference=firebaseDatabase.getReference();
 
 
-
-
         Function2<OAuthToken,Throwable, Unit> callback=new Function2<OAuthToken, Throwable, Unit>() {
             @Override
             public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                 //token이 전달 되면 성공한 것
                 if(oAuthToken!=null){
-                    updateKakaoUi();
-                    Toast.makeText(getApplicationContext(),"token값 전달 받음.",Toast.LENGTH_SHORT).show();
+                    updateSignIn(1,null);
+                    Toast.makeText(getApplicationContext(),"token값 전달 받음. ",Toast.LENGTH_SHORT).show();
+                    System.out.println(oAuthToken);
                 }
                 if(throwable!=null){
                     Toast.makeText(getApplicationContext(),"token값 전달 받지 못함.",Toast.LENGTH_SHORT).show();
+                    System.out.println(throwable);
                 }
                 return null;
             }
         };
+
+
+        GoogleSignInOptions gso= new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        GoogleSignInClient mGoogleSingnClient= GoogleSignIn.getClient(this,gso);
+
+        //test
+        mGoogleSingnClient.revokeAccess().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+
+            }
+        });
+
+
+        //액티비티 콜백함수
+        resultLauncher=registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+
+                if(result.getResultCode()==RESULT_OK){
+                        Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(result.getData());
+                        try{
+                            GoogleSignInAccount account=task.getResult(ApiException.class);
+                            System.out.println(account);
+                            firebaseAuthWithGoogle(account.getIdToken());
+                            updateSignIn(0, result);
+                        } catch (ApiException e) {
+                            e.printStackTrace();
+                        }
+                }
+
+                else{
+                    System.out.println(result.getResultCode());
+                    System.out.println("GoogleSingIn3");
+                }
+
+            }
+        });
 
         //kakao로그인
         kakao.setOnClickListener(new View.OnClickListener() {
@@ -93,13 +146,23 @@ public class LoginActivity extends AppCompatActivity {
                     UserApiClient.getInstance().loginWithKakaoTalk(getApplicationContext(),callback);
                 }else{
                     UserApiClient.getInstance().loginWithKakaoAccount(getApplicationContext(),callback);
-
                 }
             }
         });
 
 
+        //google로그인
 
+        google.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent signInIntent =mGoogleSingnClient.getSignInIntent();
+                signInIntent.putExtra("callType",1001);
+                System.out.println(signInIntent.getIntExtra("callType",11));
+                resultLauncher.launch(signInIntent);
+
+            }
+        });
 
         //어댑터에 뷰 객체 추가하고 뷰페이지에 어댑터 달기
         setViewPager(viewPager);
@@ -113,7 +176,6 @@ public class LoginActivity extends AppCompatActivity {
         //뷰페이저에 tablayout달기
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
-
         //애니메이션 효과 셋팅
         tabLayout.setTranslationY(300);
         logo.setTranslationY(-700);
@@ -123,7 +185,6 @@ public class LoginActivity extends AppCompatActivity {
         //애니메이션 실행
         logo.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
         tabLayout.animate().translationY(0).alpha(1).setDuration(1000).setStartDelay(400).start();
-
 
         //persistent bottom sheet 상태에따라 동작주기
         sheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
@@ -178,40 +239,83 @@ public class LoginActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    //파이어 베이스에 값 전달
-    private void updateKakaoUi(){
-        UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+    //[google]파이어베이스에 값 전달
+    private void firebaseAuthWithGoogle(String idToken){
+        AuthCredential credential = GoogleAuthProvider.getCredential(idToken,null);
+        root.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
-            public Unit invoke(User user, Throwable throwable) {
-
-                UserInfo userInfo=new UserInfo();
-                userInfo.setEmail(user.getKakaoAccount().getEmail().trim());
-                userInfo.setPw("kakao");//일단 이렇게 설정...이유는 없는데 null값도 쫌 그래서 구분짓는게 필요할거 같음or user.getId()
-                userInfo.setName(user.getKakaoAccount().getProfile().getNickname().trim());
-                userInfo.setPoint(0);
-                userInfo.setPlant("000000000000000");
-                String email=user.getKakaoAccount().getEmail();
-                root.createUserWithEmailAndPassword(email,"kakao1123").addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            FirebaseUser user=root.getCurrentUser();
-                            String uid=user.getUid();
-                            reference.child("User").child(uid).setValue(userInfo);
-                            Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                            startActivity(intent);
-                        }
-                        else{
-                            System.out.println("여기까지 온다...............");
-
-                        }
-                    }
-                });
-
-
-                return null;
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    FirebaseUser firebaseUser=root.getCurrentUser();
+                    //updateUI(firebaseUser);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(),"구글연동 로그인에 실패하였습니다.",Toast.LENGTH_SHORT).show();
+                }
             }
         });
+
+    }
+    //[kakao]파이어 베이스에 값 전달
+    private void updateSignIn(int a, ActivityResult result){
+        if (a == 0) {
+            Intent data=result.getData();
+            Task<GoogleSignInAccount> task=GoogleSignIn.getSignedInAccountFromIntent(data);
+            try {
+                GoogleSignInAccount acct=task.getResult(ApiException.class);
+                if(acct!=null){
+                    UserInfo userInfo=new UserInfo();
+                    userInfo.setName(acct.getDisplayName());
+                    userInfo.setEmail(acct.getEmail().trim());
+                    userInfo.setPoint(0);
+                    userInfo.setPw("google");
+                    userInfo.setPlant("000000000000000");
+                    String email=acct.getEmail().trim();
+                    String temp_pw="google1123!";
+                    FirebaseUser user = root.getCurrentUser();
+                    String uid = user.getUid();
+                    System.out.println(uid);
+                    reference.child("User").child(uid).setValue(userInfo);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+
+                }
+            } catch (ApiException e) {
+                e.printStackTrace();
+            }
+
+
+        } else if (a == 1) {
+            UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+                @Override
+                public Unit invoke(User user, Throwable throwable) {
+                    String temp_pw = "kakao1123!";
+                    UserInfo userInfo = new UserInfo();
+                    userInfo.setEmail(user.getKakaoAccount().getEmail().trim());
+                    //일단 이렇게 설정...이유는 연동 로그인은  Resource Owner에게 AccessToken만 받으면 되는데, null값도 쫌 그래서 구분짓는게 필요할거 같음or user.getId()
+                    userInfo.setPw(temp_pw);
+                    userInfo.setName(user.getKakaoAccount().getProfile().getNickname().trim());
+                    userInfo.setPoint(0);
+                    userInfo.setPlant("000000000000000");
+                    String email = user.getKakaoAccount().getEmail();
+                    root.createUserWithEmailAndPassword(email, temp_pw).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                FirebaseUser user = root.getCurrentUser();
+                                String uid = user.getUid();
+                                reference.child("User").child(uid).setValue(userInfo);
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                            } else {
+                                System.out.println("빠른로그인에 실패하였습니다.");
+                            }
+                        }
+                    });
+                    return null;
+                }
+            });
+        }
     }
 
 

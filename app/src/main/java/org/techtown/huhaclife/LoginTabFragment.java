@@ -44,10 +44,10 @@ public class LoginTabFragment extends Fragment {
         root1= FirebaseAuth.getInstance();
         user=root1.getCurrentUser();
 
-        //사용자 권한이 있을 경우
+       /* //사용자 권한이 있을 경우
         if(user!=null){
            startActivity(new Intent(getActivity(), MainActivity.class));
-        }
+        }*/
 
 
         btn_login.setOnClickListener(new View.OnClickListener() {
